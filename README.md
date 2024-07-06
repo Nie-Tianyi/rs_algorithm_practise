@@ -35,7 +35,26 @@ Insertion Sort is a simple sorting algorithm as well. It picks one element at a 
 ```pseudocode
 for i in the range from 1 to array_length:
 	let current element be the element at index i
-	while array[i-1] < array[i], swap (i-1,i)
+	while array[i-1] < array[i], swap (i-1,i), i -= 1.
 ```
 
 The time complexity of this algorithm is $O(n^2)$.
+
+### 4. Merge Sort
+
+Merge Sort is a recursive sorting algorthm. It divides the orginal array into two pieces of equal size, and sort them respectively. The pseudo code of this algorithm is:
+
+```pseudocode
+divide the array into left half, right half:
+if the length of the array is smaller or equal to 1, returns
+merge sort the left half
+marge sort the right half
+init a new array to store the result
+for elements in left half, and elements in right half
+	Place the smaller elements of the two arrays one by one into the new array
+returns the new array
+	
+```
+
+The time complexity of this sorting algorithm is $O(nlog_2 n)$ , but it takes larger memory space than the first three sorting algorithms. the space complexity of this algorithm is $O(n)$ , while the space complexity of the first three algorithm is $O(1)$
+

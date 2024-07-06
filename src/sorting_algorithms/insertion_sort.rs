@@ -1,15 +1,15 @@
 /// insertion sort.
 ///
 ///  # Arguments:
-/// 
+///
 /// `array: &mut Vec<T>` an unsorted array, where
-/// T must implement `PartialOrd` and `Copy`
-pub fn insertion_sort<T: PartialOrd + Copy>(array: &mut Vec<T>) {
+/// T must implement `Ord` and `Copy`
+pub fn insertion_sort<T: Ord + Copy>(array: &mut Vec<T>) {
     for i in 1..array.len() {
         let current = array[i];
         let mut j = (i as isize) - 1;
 
-        // Move elements of array[0..i-1], that are greater than key, 
+        // Move elements of array[0..i-1], that are greater than key,
         // to one position ahead of their current position
         while j >= 0 && array[j as usize] > current {
             array[(j + 1) as usize] = array[j as usize];
