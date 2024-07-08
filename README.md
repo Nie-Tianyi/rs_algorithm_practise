@@ -26,7 +26,7 @@ for i in range from 0 to array_length -1:
 	swap(i,smallest element)
 ```
 
-The time commplexity is also $O(n^2)$, because finding the smalles element in an array needs to iterate over the array.
+The time complexity is also $O(n^2)$, because finding the smallest element in an array needs to iterate over the array.
 
 ### 3. Insertion Sort
 
@@ -42,7 +42,7 @@ The time complexity of this algorithm is $O(n^2)$.
 
 ### 4. Merge Sort
 
-Merge Sort is a recursive sorting algorthm. It divides the orginal array into two pieces of equal size, and sort them respectively. The pseudo code of this algorithm is:
+Merge Sort is a recursive sorting algorithm. It divides the original array into two pieces of equal size, and sort them respectively. The pseudo code of this algorithm is:
 
 ```pseudocode
 divide the array into left half, right half:
@@ -82,7 +82,7 @@ In the average cases, the time complexity of this algorithm is $O(n\log_2 n)$ an
 
 ### 1. Pseudo Random Generator Algorithms
 
-Generating a psedo random number involves take modulo on large integer. To generate a large integer, we can define few steps to calculate a random integer:
+Generating a pseudo random number involves take modulo on large integer. To generate a large integer, we can define few steps to calculate a random integer:
 
 ``` rust
 pub struct RandomGen {
@@ -109,4 +109,4 @@ impl RandomGen {
 }
 ```
 
-Here, the `mul`,`inc`,`modulo` are just random numbers. In case of overflow, we can use external crate to  define these integers to be large numbers (e.g. array of i32 that implements basic math operations).
+Here, the `mul`,`inc`,`modulo` are just random numbers. In case of overflow, we can use external crate to define these integers to be large numbers (e.g. array of i32 that implements basic math operations).
