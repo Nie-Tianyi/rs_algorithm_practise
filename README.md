@@ -53,8 +53,32 @@ init a new array to store the result
 for elements in left half, and elements in right half
 	Place the smaller elements of the two arrays one by one into the new array
 returns the new array
-	
 ```
 
-The time complexity of this sorting algorithm is $O(nlog_2 n)$ , but it takes larger memory space than the first three sorting algorithms. the space complexity of this algorithm is $O(n)$ , while the space complexity of the first three algorithm is $O(1)$
+The time complexity of this sorting algorithm is $O(n\log_2 n)$ , but it takes larger memory space than the first three sorting algorithms. the space complexity of this algorithm is $O(n)$ , while the space complexity of the first three algorithm is $O(1)$
+
+### 5. Quick Sort
+
+Quick Sort is another recursive sorting algorithm. It use a unique techniques called "pivot". "pivot" is select an element in an array, and moves it to its rights place, where all the elements before it are smaller than it, and all the elements after it are greater than it. The pseudo code for pivot can be expressed as:
+
+```pseudocode
+select an element in the array, lets call it pivot point (usually the first element)
+for every elements in array:
+	if the element is smaller than pivot point:
+		moves it before the pivot point,
+```
+
+The pseudo code for the Quick Sort then can be expressed as:
+
+```pseudocode
+pivot the array.
+recursively pivot the elements on the right side of the pivot point,
+recursively pivot the elements on the left side of the pivot point.
+```
+
+In the average cases, the time complexity of this algorithm is $O(n\log_2 n)$ and the space complexity of this algorithm is $O(n)$
+
+## Supplementary Materials
+
+### 1. Pseudo Random Generator Algorithms
 

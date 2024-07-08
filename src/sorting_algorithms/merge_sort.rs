@@ -1,6 +1,6 @@
 /// merge sort, a classic recursive sorting algorithm.
-/// divide the orginal array into two pieces and sort them respectively.
-/// it comsumes the orginal array and returns a sorted array
+/// divide the original array into two pieces and sort them respectively.
+/// it consumes the original array and returns a sorted array
 ///
 /// # Arguments:
 /// `mut array: Vec<T>` where T must implement trait `Ord`
@@ -23,11 +23,11 @@ where
     let a = merge_sort(array); // recursively merge sort the left part
     let b = merge_sort(b); // recursively merge sort the right part
 
-    // into interators
+    // into iterators
     let mut a_iter = a.into_iter();
     let mut b_iter = b.into_iter();
 
-    // get the first element of each iterater
+    // get the first element of each iterator
     let mut a_peak = a_iter.next();
     let mut b_peak = b_iter.next();
 
