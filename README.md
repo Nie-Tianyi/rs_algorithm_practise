@@ -82,3 +82,31 @@ In the average cases, the time complexity of this algorithm is $O(n\log_2 n)$ an
 
 ### 1. Pseudo Random Generator Algorithms
 
+Generating a psedo random number involves take modulo on large integer. To generate a large integer, we can define few steps to calculate a random integer:
+
+``` rust
+pub struct RandomGen {
+    cur: usize,
+    mul: usize,
+    inc: usize,
+    modulo: usize,
+}
+
+impl RandomGen {
+    pub fn new(seed: usize) -> Self {
+        RandomGen {
+            cur: seed,
+            mul: 56394237_usize,
+            inc: 346423496_usize,
+            modulo: 25254463563_usize,
+        }
+    }
+
+    pub fn rand_usize(&mut self, max: usize) -> usize {
+        self.cur = (self.cur * self.mul + self.inc) % self.modulo;
+        self.cur % max
+    }
+}
+```
+
+Here, the `mul`,`inc`,`modulo` are just random numbers. In case of overflow, we can use external crate to  define these integers to be large numbers (e.g. array of i32 that implements basic math operations).
