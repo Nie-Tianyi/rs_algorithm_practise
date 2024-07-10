@@ -95,11 +95,9 @@ impl<T: Display> LinkedList<T> {
 
     // insert a node with value `data: T` after this node
     fn insert_internal(&mut self, data: T) {
-        // if the list is None, directly shift one element
+        // if the list is None, panic
         if self.0.is_none() {
-            self.shift(data);
-            println!("None None None");
-            return;
+            panic!("index out of bound");
         }
         let (self_value,child) = self.0.take().unwrap();
         
@@ -137,7 +135,8 @@ mod tests {
         
         ll.insert(0, 0);
         println!("{}",ll);
-        ll.insert(4, 4);
+        ll.insert(5, 5);
+        ll.insert(6, 7);
         println!("{}",ll);
     }
 
