@@ -105,6 +105,22 @@ impl<T: Display> LinkedList<T> {
     }
 }
 
+#[macro_export]
+macro_rules! linked_list {
+    () => {
+        LinkedList::new()
+    };
+    ($($elem:expr),+ $(,)?) => {
+        {
+            let mut temp_list = LinkedList::new();
+            $(
+                temp_list.push($elem);
+            )+
+            temp_list
+        }
+    };
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -149,5 +165,11 @@ mod tests {
         
         ll.insert_internal(0);
         println!("{}",ll);
+    }
+
+    #[test]
+    fn test_macro(){
+        let ll:LinkedList<i32> = linked_list!();
+        println!("{}",ll)
     }
 }
