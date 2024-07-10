@@ -2,7 +2,7 @@ use core::panic;
 use std::fmt::Display;
 
 #[derive(Debug, Clone)]
-/// a single direction linked list, T must implement `Display` trait.
+/// a single linked list, T must implement `Display` trait.
 /// this linked list will be displayed as ` a -> b -> c -> ... -> None`
 pub struct LinkedList<T: Display>(Option<(T, Box<LinkedList<T>>)>);
 
