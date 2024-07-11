@@ -61,6 +61,17 @@ impl<T> DoublyLinkedList<T> {
     }
 }
 
+/// init a linked list, and push the items into the list
+/// in a reverse order.
+///
+/// # Examples
+/// ```rust
+/// use rs_algorithm_practise::data_structure::doubly_linked_list::DoublyLinkedList;
+/// use rs_algorithm_practise::doubly_linked_list;
+///
+/// let dll: DoublyLinkedList<i32> = doubly_linked_list![1,2,3];
+/// println!("{}", dll); // DoublyLinkedList(None ⇋ 1 ⇋ 2 ⇋ 3 ⇋ None)
+/// ```
 #[macro_export]
 macro_rules! doubly_linked_list {
     ($($elem:expr),*) => {
