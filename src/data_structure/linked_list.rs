@@ -33,19 +33,15 @@ impl<T: Display> LinkedList<T> {
     }
 
     /// peak the first node's value
-    /// 
+    ///
     /// # Returns
     /// `Option<&T>` return an option, if the list is None, return None.
-    /// 
+    ///
     /// If the list is not None, return the reference of first value.
     pub fn peak(&self) -> Option<&T> {
         match self.0 {
-            Some((ref value, _)) => {
-                Some(value)
-            },
-            None => {
-                None
-            }
+            Some((ref value, _)) => { Some(value) }
+            None => { None }
         }
     }
 
@@ -122,6 +118,17 @@ impl<T: Display> LinkedList<T> {
     }
 }
 
+/// init a linked list, and push the items into the list
+/// in a reverse order.
+///
+/// # Examples
+/// ```rust
+/// use rs_algorithm_practise::data_structure::linked_list::LinkedList;
+/// use rs_algorithm_practise::linked_list;
+///
+/// let ll: LinkedList<i32> = linked_list![1,2,3];
+/// println!("{}", ll); //LinkedList(1 → 2 → 3 → None)
+/// ```
 #[macro_export]
 macro_rules! linked_list {
     ($($elem:expr),*) => {
@@ -185,7 +192,7 @@ mod tests {
 
     #[test]
     fn test_macro() {
-        let ll: LinkedList<i32> = linked_list![1,2,3];
+        let ll: LinkedList<i32> = linked_list![1, 2, 3];
         println!("{}", ll);
     }
 }
