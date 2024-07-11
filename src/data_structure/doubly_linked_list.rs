@@ -5,14 +5,14 @@ use std::{
 
 /// a doubly linked list
 pub struct DoublyLinkedList<T> {
-    first: Option<Rc<RefCell<DbNode<T>>>>,
-    last: Option<Weak<RefCell<DbNode<T>>>>,
+    first: Option<Rc<RefCell<ListNode<T>>>>,
+    last: Option<Weak<RefCell<ListNode<T>>>>,
 }  
 
-pub struct DbNode<T> {
+pub struct ListNode<T> {
     data: T,
-    next: Option<Rc<RefCell<DbNode<T>>>>,
-    prev: Option<Weak<RefCell<DbNode<T>>>>,
+    next: Option<Rc<RefCell<ListNode<T>>>>,
+    prev: Option<Weak<RefCell<ListNode<T>>>>,
 }
 
 impl<T> DoublyLinkedList<T> {
