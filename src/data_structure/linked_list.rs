@@ -127,9 +127,11 @@ macro_rules! linked_list {
     ($($elem:expr),*) => {
         {
             let mut temp_list = LinkedList::new();
-            $(
-                temp_list.push($elem);
-            )*
+            let mut vec = vec![$($elem),*];
+            vec.reverse();
+            for elem in vec {
+                temp_list.push(elem);
+            }
             temp_list
         }
     };
