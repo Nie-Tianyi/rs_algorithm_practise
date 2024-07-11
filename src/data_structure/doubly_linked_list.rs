@@ -61,6 +61,21 @@ impl<T> DoublyLinkedList<T> {
     }
 }
 
+#[macro_export]
+macro_rules! doubly_linked_list {
+    ($($elem:expr),*) => {
+        {
+            let mut temp_list = DoublyLinkedList::new();
+            let mut vec = vec![$($elem),*];
+            vec.reverse();
+            for elem in vec {
+                temp_list.push(elem);
+            }
+            temp_list
+        }
+    };
+}
+
 #[cfg(test)]
 mod tests{
     use super::*;
@@ -73,5 +88,11 @@ mod tests{
         dll.push(3);
 
         println!("{}", dll);
+    }
+
+    #[test]
+    fn test_macro() {
+        let dll = doubly_linked_list![1,2,3];
+        println!("{}",dll)
     }
 }
