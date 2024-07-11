@@ -4,14 +4,14 @@ use std::fmt::Display;
 #[derive(Debug, Clone)]
 /// a single linked list, T must implement `Display` trait.
 /// this linked list will be displayed as ` a -> b -> c -> ... -> None`
-pub struct LinkedList<T: Display>(Option<(T, Box<LinkedList<T>>)>);
+pub struct LinkedList<T>(Option<(T, Box<LinkedList<T>>)>);
 
 impl<T: Display> Display for LinkedList<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "LinkedList(")?;
         let mut node = self;
         while let Some((ref data, ref child)) = node.0 {
-            write!(f, "{} -> ", data)?;
+            write!(f, "{} → ", data)?;
             node = child;
         }
         write!(f, "None)")
@@ -30,6 +30,23 @@ impl<T: Display> LinkedList<T> {
     pub fn push(&mut self, data: T) {
         let t = self.0.take();
         self.0 = Some((data, Box::new(LinkedList(t))));
+    }
+
+    /// peak the first node's value
+    /// 
+    /// # Returns
+    /// `Option<&T>` return an option, if the list is None, return None.
+    /// 
+    /// If the list is not None, return the reference of first value.
+    pub fn peak(&self) -> Option<&T> {
+        match self.0 {
+            Some((ref value, _)) => {
+                Some(value)
+            },
+            None => {
+                None
+            }
+        }
     }
 
     /// delete the first element in the list and return
@@ -89,7 +106,7 @@ impl<T: Display> LinkedList<T> {
                 }
             }
         }
-        
+
         node.insert_internal(data);
     }
 
@@ -99,23 +116,20 @@ impl<T: Display> LinkedList<T> {
         if self.0.is_none() {
             panic!("index out of bound");
         }
-        let (self_value,child) = self.0.take().unwrap();
-        
-        self.0 = Some((self_value, Box::new(LinkedList(Some((data,child))))));
+        let (self_value, child) = self.0.take().unwrap();
+
+        self.0 = Some((self_value, Box::new(LinkedList(Some((data, child))))));
     }
 }
 
 #[macro_export]
 macro_rules! linked_list {
-    () => {
-        LinkedList::new()
-    };
-    ($($elem:expr),+ $(,)?) => {
+    ($($elem:expr),*) => {
         {
             let mut temp_list = LinkedList::new();
             $(
                 temp_list.push($elem);
-            )+
+            )*
             temp_list
         }
     };
@@ -142,34 +156,34 @@ mod tests {
         assert_eq!(None, ll.pop());
     }
     #[test]
-    fn test_insert(){
+    fn test_insert() {
         let mut ll = LinkedList::new();
         ll.push(4);
         ll.push(3);
         ll.push(2);
         ll.push(1);
-        
+
         ll.insert(0, 0);
-        println!("{}",ll);
+        println!("{}", ll);
         ll.insert(5, 5);
-        println!("{}",ll);
+        println!("{}", ll);
     }
 
     #[test]
-    fn test_insert_internal(){
+    fn test_insert_internal() {
         let mut ll = LinkedList::new();
         ll.push(4);
         ll.push(3);
         ll.push(2);
         ll.push(1);
-        
+
         ll.insert_internal(0);
-        println!("{}",ll);
+        println!("{}", ll);
     }
 
     #[test]
-    fn test_macro(){
-        let ll:LinkedList<i32> = linked_list!();
-        println!("{}",ll)
+    fn test_macro() {
+        let ll: LinkedList<i32> = linked_list![1,2,3];
+        println!("{}", ll);
     }
 }
