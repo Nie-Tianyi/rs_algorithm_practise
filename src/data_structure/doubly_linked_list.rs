@@ -18,10 +18,10 @@ pub struct ListNode<T> {
 
 impl<T: Display> Display for DoublyLinkedList<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "DoublyLinkedList(None ⇋")?;
+        write!(f, "DoublyLinkedList(None ⇌")?;
         let mut node = self.first.clone();
         while let Some(r) = node {
-            write!(f, " {} ⇋", r.borrow().data)?;
+            write!(f, " {} ⇌", r.borrow().data)?;
             node = r.borrow().next.clone();
         }
         write!(f, " None)")
@@ -36,6 +36,7 @@ impl<T> DoublyLinkedList<T> {
         }
     }
 
+    /// add a new element at the front
     pub fn push(&mut self, data: T) {
         match self.first.take() {
             Some(node) => {
@@ -48,6 +49,31 @@ impl<T> DoublyLinkedList<T> {
                 m.prev = Some(Rc::downgrade(&new_front));
                 self.first = Some(new_front);
             }
+            None => {
+                let new_node = Rc::new(RefCell::new(ListNode {
+                    data,
+                    next: None,
+                    prev: None,
+                }));
+                self.last = Some(Rc::downgrade(&new_node));
+                self.first = Some(new_node);
+            }
+        }
+    }
+    /// add a new element at the end of the list
+    pub fn shift(&mut self, data: T) {
+        match self.last.take() {
+            Some(node) => {
+                let new_back = Rc::new(RefCell::new(ListNode {
+                    data,
+                    next: None ,
+                    prev: Some(node.clone()),
+                }));
+                let st = Weak::upgrade(&node).unwrap();
+                let mut m = st.borrow_mut();
+                self.last = Some(Rc::downgrade(&new_back));
+                m.next = Some(new_back);
+            } 
             None => {
                 let new_node = Rc::new(RefCell::new(ListNode {
                     data,
@@ -88,22 +114,25 @@ macro_rules! doubly_linked_list {
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
 
     #[test]
-    fn test_doubly_linked_list(){
+    fn test_doubly_linked_list() {
         let mut dll = DoublyLinkedList::new();
         dll.push(1);
         dll.push(2);
         dll.push(3);
+        dll.shift(4);
+        dll.shift(5);
+        dll.shift(6);
 
         println!("{}", dll);
     }
 
     #[test]
     fn test_macro() {
-        let dll = doubly_linked_list![1,2,3];
-        println!("{}",dll)
+        let dll: DoublyLinkedList<i32> = doubly_linked_list![1, 2, 3, 4, 5];
+        println!("{}", dll)
     }
 }
