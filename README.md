@@ -92,7 +92,32 @@ In the rust implementation, to avoid the recursive reference, we use the `Rc<T>`
 
 ## Supplementary Materials
 
-### 1. Pseudo Random Generator Algorithms
+### 1. A Stepper
+
+we can use for-loop iterate over our struct if we have implemented `Iterator` for our struct:
+
+```rust
+pub struct Stepper{
+    current: i32,
+    step: i32,
+    max: i32,
+}
+
+impl Iterator for Stepper {
+    type Item = i32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.current > self.max{
+            return None;
+        }
+        let res = self.current;
+        self.current += self.step;
+        Some(res) 
+    }
+}
+```
+
+### 2. Pseudo Random Generator Algorithms
 
 Generating a pseudo random number involves take modulo on large integer. To generate a large integer, we can define few steps to calculate a random integer:
 
