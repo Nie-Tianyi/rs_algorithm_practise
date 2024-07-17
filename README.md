@@ -78,6 +78,14 @@ recursively pivot the elements on the left side of the pivot point.
 
 In the average cases, the time complexity of this algorithm is $O(n\log_2 n)$ and the space complexity of this algorithm is $O(n)$
 
+## Data Structure
+
+### 1. Linked List
+
+![Linked List](assets/images/linked-list.webp)
+
+A ***linked list*** is a linear data structure that consists of a series of nodes connected by pointers. Each node contains ***data*** and a ***reference*** to the next node in the list. Unlike arrays, linked lists allow for ***efficient insertion or removal*** of elements from any position in the list, as the nodes are not stored contiguously in memory.
+
 ## Supplementary Materials
 
 ### 1. Pseudo Random Generator Algorithms

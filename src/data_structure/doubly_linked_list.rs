@@ -10,6 +10,7 @@ pub struct DoublyLinkedList<T> {
     last: Option<Weak<RefCell<ListNode<T>>>>,
 }
 
+#[derive(Default)]
 pub struct ListNode<T> {
     data: T,
     next: Option<Rc<RefCell<ListNode<T>>>>,
@@ -28,7 +29,7 @@ impl<T: Display> Display for DoublyLinkedList<T> {
     }
 }
 
-impl<T> DoublyLinkedList<T> {
+impl<T:Default> DoublyLinkedList<T> {
     pub fn new() -> Self {
         DoublyLinkedList {
             first: None,
@@ -60,20 +61,44 @@ impl<T> DoublyLinkedList<T> {
             }
         }
     }
+    /// delete the first element, return it
+    pub fn pop(&mut self) -> Option<T> {
+        match self.first.take() {
+            Some(first_node) => {
+                let first_node = RefCell::take(&first_node);
+                let next_node = first_node.next;
+                match next_node {
+                    Some(next_node) => {
+                        next_node.borrow_mut().prev = None;
+                        self.first = Some(next_node.clone());
+                    },
+                    None => {
+                        self.first = None;
+                        self.last = None;
+                    },
+                }
+                let res = first_node.data;
+                Some(res)
+                
+            }
+            None => None,
+        }
+    }
+
     /// add a new element at the end of the list
     pub fn shift(&mut self, data: T) {
         match self.last.take() {
             Some(node) => {
                 let new_back = Rc::new(RefCell::new(ListNode {
                     data,
-                    next: None ,
+                    next: None,
                     prev: Some(node.clone()),
                 }));
                 let st = Weak::upgrade(&node).unwrap();
                 let mut m = st.borrow_mut();
                 self.last = Some(Rc::downgrade(&new_back));
                 m.next = Some(new_back);
-            } 
+            }
             None => {
                 let new_node = Rc::new(RefCell::new(ListNode {
                     data,
@@ -127,7 +152,10 @@ mod tests {
         dll.shift(5);
         dll.shift(6);
 
+        let a = dll.pop();
+
         println!("{}", dll);
+        println!("{}", a.unwrap())
     }
 
     #[test]
