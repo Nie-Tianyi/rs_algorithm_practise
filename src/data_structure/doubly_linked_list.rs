@@ -38,7 +38,7 @@ impl<T:Default> DoublyLinkedList<T> {
     }
 
     /// add a new element at the front
-    pub fn push(&mut self, data: T) {
+    pub fn push_front(&mut self, data: T) {
         match self.first.take() {
             Some(node) => {
                 let new_front = Rc::new(RefCell::new(ListNode {
@@ -62,7 +62,7 @@ impl<T:Default> DoublyLinkedList<T> {
         }
     }
     /// delete the first element, return it
-    pub fn pop(&mut self) -> Option<T> {
+    pub fn pop_front(&mut self) -> Option<T> {
         match self.first.take() {
             Some(first_node) => {
                 let first_node = RefCell::take(&first_node);
@@ -86,7 +86,7 @@ impl<T:Default> DoublyLinkedList<T> {
     }
 
     /// add a new element at the end of the list
-    pub fn shift(&mut self, data: T) {
+    pub fn push_back(&mut self, data: T) {
         match self.last.take() {
             Some(node) => {
                 let new_back = Rc::new(RefCell::new(ListNode {
@@ -112,7 +112,7 @@ impl<T:Default> DoublyLinkedList<T> {
     }
 }
 
-/// init a linked list, and push the items into the list
+/// init a linked list, and push_front the items into the list
 /// in a reverse order.
 ///
 /// # Examples
@@ -131,7 +131,7 @@ macro_rules! doubly_linked_list {
             let mut vec = vec![$($elem),*];
             vec.reverse();
             for elem in vec {
-                temp_list.push(elem);
+                temp_list.push_front(elem);
             }
             temp_list
         }
@@ -145,14 +145,14 @@ mod tests {
     #[test]
     fn test_doubly_linked_list() {
         let mut dll = DoublyLinkedList::new();
-        dll.push(1);
-        dll.push(2);
-        dll.push(3);
-        dll.shift(4);
-        dll.shift(5);
-        dll.shift(6);
+        dll.push_front(1);
+        dll.push_front(2);
+        dll.push_front(3);
+        dll.push_back(4);
+        dll.push_back(5);
+        dll.push_back(6);
 
-        let a = dll.pop();
+        let a = dll.pop_front();
 
         println!("{}", dll);
         println!("{}", a.unwrap())

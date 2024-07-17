@@ -27,7 +27,7 @@ impl<T: Display> LinkedList<T> {
     ///
     /// # Arguments:
     /// `data: T` the data to be added into list
-    pub fn push(&mut self, data: T) {
+    pub fn push_front(&mut self, data: T) {
         let t = self.0.take();
         self.0 = Some((data, Box::new(LinkedList(t))));
     }
@@ -51,7 +51,7 @@ impl<T: Display> LinkedList<T> {
     /// # Returns:
     /// `Option<T>`: return the deleted element,
     /// if the list is empty, return a `None``
-    pub fn pop(&mut self) -> Option<T> {
+    pub fn pop_front(&mut self) -> Option<T> {
         match self.0.take() {
             Some((data, child)) => {
                 self.0 = child.0;
@@ -68,10 +68,10 @@ impl<T: Display> LinkedList<T> {
     ///
     /// # Arguments:
     /// `data:T` data to be inserted
-    pub fn shift(&mut self, data: T) {
+    pub fn push_back(&mut self, data: T) {
         match self.0 {
-            Some((_, ref mut child)) => child.shift(data),
-            None => self.push(data),
+            Some((_, ref mut child)) => child.push_back(data),
+            None => self.push_front(data),
         }
     }
 
@@ -86,7 +86,7 @@ impl<T: Display> LinkedList<T> {
     /// panic if the index is out of bound
     pub fn insert(&mut self, data: T, index: usize) {
         if index == 0 {
-            self.push(data);
+            self.push_front(data);
             return;
         }
 
@@ -103,11 +103,11 @@ impl<T: Display> LinkedList<T> {
             }
         }
 
-        node.insert_internal(data);
+        node.insert_next(data);
     }
 
     // insert a node with value `data: T` after this node
-    fn insert_internal(&mut self, data: T) {
+    fn insert_next(&mut self, data: T) {
         // if the list is None, panic
         if self.0.is_none() {
             panic!("index out of bound");
@@ -137,7 +137,7 @@ macro_rules! linked_list {
             let mut vec = vec![$($elem),*];
             vec.reverse();
             for elem in vec {
-                temp_list.push(elem);
+                temp_list.push_front(elem);
             }
             temp_list
         }
@@ -151,26 +151,26 @@ mod tests {
     #[test]
     fn test_linked_list() {
         let mut ll = LinkedList::new();
-        ll.push(12_usize);
-        ll.shift(13_usize);
-        ll.push(11_usize);
+        ll.push_front(12_usize);
+        ll.push_back(13_usize);
+        ll.push_front(11_usize);
         println!("{}", ll);
-        let v = ll.pop().unwrap();
+        let v = ll.pop_front().unwrap();
         println!("popped value: {}, linked list: {}", v, ll);
-        let v = ll.pop().unwrap();
+        let v = ll.pop_front().unwrap();
         println!("popped value: {}, linked list: {}", v, ll);
-        let v = ll.pop().unwrap();
+        let v = ll.pop_front().unwrap();
         println!("popped value: {}, linked list: {}", v, ll);
-        assert_eq!(None, ll.pop());
-        assert_eq!(None, ll.pop());
+        assert_eq!(None, ll.pop_front());
+        assert_eq!(None, ll.pop_front());
     }
     #[test]
     fn test_insert() {
         let mut ll = LinkedList::new();
-        ll.push(4);
-        ll.push(3);
-        ll.push(2);
-        ll.push(1);
+        ll.push_front(4);
+        ll.push_front(3);
+        ll.push_front(2);
+        ll.push_front(1);
 
         ll.insert(0, 0);
         println!("{}", ll);
@@ -181,12 +181,12 @@ mod tests {
     #[test]
     fn test_insert_internal() {
         let mut ll = LinkedList::new();
-        ll.push(4);
-        ll.push(3);
-        ll.push(2);
-        ll.push(1);
+        ll.push_front(4);
+        ll.push_front(3);
+        ll.push_front(2);
+        ll.push_front(1);
 
-        ll.insert_internal(0);
+        ll.insert_next(0);
         println!("{}", ll);
     }
 
