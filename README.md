@@ -94,7 +94,7 @@ In the rust implementation, to avoid the recursive reference, we use the `Rc<T>`
 
 ### 1. A Stepper
 
-we can use for-loop iterate over our struct if we have implemented `Iterator` for our struct:
+we can use for-loop iterate over our struct if we have implemented trait `Iterator` for our struct:
 
 ```rust
 pub struct Stepper{
