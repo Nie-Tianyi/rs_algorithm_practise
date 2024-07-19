@@ -9,14 +9,14 @@ pub struct DoublyLinkedList<T> {
     first: Option<Rc<RefCell<ListNode<T>>>>,
     last: Option<Weak<RefCell<ListNode<T>>>>,
 }
-
+/// list node of doubly linked list
 #[derive(Default)]
 pub struct ListNode<T> {
     data: T,
     next: Option<Rc<RefCell<ListNode<T>>>>,
     prev: Option<Weak<RefCell<ListNode<T>>>>,
 }
-
+/// Display the linked list
 impl<T: Display> Display for DoublyLinkedList<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "DoublyLinkedList(None ⇌")?;

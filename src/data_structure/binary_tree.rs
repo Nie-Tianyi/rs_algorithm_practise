@@ -20,6 +20,11 @@ impl<T> BinaryTree<T> {
     pub fn new() -> Self {
         BinaryTree(None)
     }
+
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.0.is_none()
+    }
 }
 
 impl<T: Clone> BinaryTree<T> {
