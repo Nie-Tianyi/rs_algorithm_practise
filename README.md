@@ -90,6 +90,12 @@ There three types of linked list: singly linked list, doubly linked list, and ci
 
 In the rust implementation, to avoid the recursive reference, we use the `Rc<T>` to wrap the reference to the next node, and `Weak<T>` to wrap the reference to the previous node.
 
+### 2. Queue
+
+![queue](/Users/nietianyi/RustroverProjects/rs_algorithm_practise/assets/images/queue.png)
+
+A **Queue** is a fundamental data structure in computer science that follows the First In, First Out (FIFO) principle. This means that the first element added to the queue will be the first one to be removed. Queues are used in various applications such as scheduling processes in operating systems, managing tasks in a print spooler, and handling asynchronous data transfers.
+
 ## Supplementary Materials
 
 ### 1. A Stepper
