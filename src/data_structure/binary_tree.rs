@@ -15,46 +15,42 @@ impl<T: Display> Display for BinaryTree<T> {
     }
 }
 
-
 impl<T> BinaryTree<T> {
     #[inline]
     pub fn new() -> Self {
         BinaryTree(None)
     }
+}
 
-    pub fn traverse_preorder(&self) -> Vec<T> {
-        vec![]
+impl<T: Clone> BinaryTree<T> {
+    pub fn preorder_traversal_recursive(&self, v: &mut Vec<T>) {
+        if let Some(ref node) = self.0 {
+            v.push(node.data.clone());
+            node.left_node.preorder_traversal_recursive(v);
+            node.right_node.preorder_traversal_recursive(v);
+        }
     }
 
-    pub fn traverse_inorder(&self) -> Vec<T> {
-        vec![]
+    pub fn inorder_traversal_recursive(&self, v: &mut Vec<T>) {
+        if let Some(ref node) = self.0 {
+            node.left_node.inorder_traversal_recursive(v);
+            v.push(node.data.clone());
+            node.right_node.inorder_traversal_recursive(v);
+        }
     }
 
-    pub fn traverse_postorder(&self) -> Vec<T> {
-        vec![]
+    pub fn postorder_traversal_recursive(&self, v: &mut Vec<T>) {
+        if let Some(ref node) = self.0 {
+            node.left_node.postorder_traversal_recursive(v);
+            node.right_node.postorder_traversal_recursive(v);
+            v.push(node.data.clone());
+        }
     }
 
     pub fn breadth_first_traverse(&self) -> Vec<T> {
         vec![]
     }
 }
-
-impl<T:Clone> BinaryTree<T>{
-    pub fn to_vec(&self) -> Vec<T> {
-        let mut vec = Vec::new();
-        self.to_vec_recursive(&mut vec);
-        vec
-    }
-
-    fn to_vec_recursive(&self, vec: &mut Vec<T>) {
-        if let Some(ref node) = self.0 {
-            vec.push(node.data.clone());
-            node.left_node.to_vec_recursive(vec);
-            node.right_node.to_vec_recursive(vec);
-        }
-    }
-}
-
 
 impl<T: Ord> BinaryTree<T> {
     pub fn add_sort(&mut self, data: T) {
@@ -67,11 +63,13 @@ impl<T: Ord> BinaryTree<T> {
                 }
             }
             None => {
-                self.0 = Some(Box::new(TreeNode {
-                    data,
-                    left_node: BinaryTree::new(),
-                    right_node: BinaryTree::new(),
-                }));
+                self.0 = Some(
+                    Box::new(TreeNode {
+                        data,
+                        left_node: BinaryTree::new(),
+                        right_node: BinaryTree::new(),
+                    })
+                );
             }
         }
     }
@@ -92,6 +90,10 @@ mod tests {
         bt.add_sort(11);
         bt.add_sort(13);
 
-        println!("{:?}", bt.to_vec())
+        let mut v = Vec::new();
+
+        bt.postorder_traversal_recursive(&mut v);
+
+        println!("{:?}", v)
     }
 }

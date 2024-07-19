@@ -24,6 +24,11 @@ impl<T: Display> LinkedList<T> {
         LinkedList(None)
     }
 
+    #[inline]
+    pub fn is_empty(&self) -> bool{
+        self.0.is_none()
+    }
+
     /// add an element at the head of the list
     ///
     /// # Arguments:

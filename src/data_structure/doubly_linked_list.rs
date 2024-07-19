@@ -38,6 +38,11 @@ impl<T:Default> DoublyLinkedList<T> {
         }
     }
 
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.first.is_none() && self.last.is_none()
+    }
+
     /// add a new element at the front
     pub fn push_front(&mut self, data: T) {
         match self.first.take() {
