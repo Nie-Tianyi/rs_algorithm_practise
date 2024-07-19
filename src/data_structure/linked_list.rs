@@ -19,6 +19,7 @@ impl<T: Display> Display for LinkedList<T> {
 }
 
 impl<T: Display> LinkedList<T> {
+    #[inline]
     pub fn new() -> Self {
         LinkedList(None)
     }
@@ -27,6 +28,7 @@ impl<T: Display> LinkedList<T> {
     ///
     /// # Arguments:
     /// `data: T` the data to be added into list
+    #[inline]
     pub fn push_front(&mut self, data: T) {
         let t = self.0.take();
         self.0 = Some((data, Box::new(LinkedList(t))));
@@ -38,6 +40,7 @@ impl<T: Display> LinkedList<T> {
     /// `Option<&T>` return an option, if the list is None, return None.
     ///
     /// If the list is not None, return the reference of first value.
+    #[inline]
     pub fn peak(&self) -> Option<&T> {
         match self.0 {
             Some((ref value, _)) => { Some(value) }
@@ -50,7 +53,8 @@ impl<T: Display> LinkedList<T> {
     ///
     /// # Returns:
     /// `Option<T>`: return the deleted element,
-    /// if the list is empty, return a `None``
+    /// if the list is empty, return a `None`
+    #[inline]
     pub fn pop_front(&mut self) -> Option<T> {
         match self.0.take() {
             Some((data, child)) => {
@@ -68,6 +72,7 @@ impl<T: Display> LinkedList<T> {
     ///
     /// # Arguments:
     /// `data:T` data to be inserted
+    #[inline]
     pub fn push_back(&mut self, data: T) {
         match self.0 {
             Some((_, ref mut child)) => child.push_back(data),

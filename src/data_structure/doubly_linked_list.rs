@@ -30,6 +30,7 @@ impl<T: Display> Display for DoublyLinkedList<T> {
 }
 
 impl<T:Default> DoublyLinkedList<T> {
+    #[inline]
     pub fn new() -> Self {
         DoublyLinkedList {
             first: None,
