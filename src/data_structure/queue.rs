@@ -1,5 +1,3 @@
-use std::sync::Mutex;
-
 use super::doubly_linked_list::DoublyLinkedList;
 
 /// `Queue` is a generic queue structure that utilizes a doubly linked list as its underlying data structure.
