@@ -86,7 +86,7 @@ In the average cases, the time complexity of this algorithm is $O(n\log_2 n)$ an
 
 A **linked list** is a linear data structure that consists of a series of nodes connected by pointers. Each node contains **data** and a **reference** to the next node in the list. Unlike arrays, linked lists allow for **efficient insertion or removal** of elements from any position in the list, as the nodes are not stored contiguously in memory.
 
-There three types of linked list: singly linked list, doubly linked list, and circular linked list. singly linked list is the simplest one, it only contains a reference to the next node. doubly linked list contains two references, one to the next node, and one to the previous node. circular linked list is a linked list where the last node points to the first node.
+There three types of linked list: singly linked list, doubly linked list, and circular linked list. singly linked list is the simplest one, it only contains a reference to the next node. doubly linked list contains two references, one to the next node, and one to the previous node. circular linked list is a linked list where the last node points to the first node. The time complexity for adding or deleting a node in a linked list is **$O(1)$** ,   the time complexity for insertion is $O(n)$.
 
 In the rust implementation, to avoid the recursive reference, we use the `Rc<T>` to wrap the reference to the next node, and `Weak<T>` to wrap the reference to the previous node.
 
