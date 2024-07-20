@@ -1,12 +1,13 @@
 use std::{cell::RefCell, fmt::Display, rc::{ Rc, Weak } };
 
 /// a doubly linked list
+#[derive(Debug)]
 pub struct DoublyLinkedList<T> {
     first: Option<Rc<RefCell<ListNode<T>>>>,
     last: Option<Weak<RefCell<ListNode<T>>>>,
 }
 /// list node of doubly linked list
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct ListNode<T> {
     data: T,
     next: Option<Rc<RefCell<ListNode<T>>>>,
@@ -172,6 +173,32 @@ impl<T> DoublyLinkedList<T> {
     }
 }
 
+impl<T: PartialEq> PartialEq for DoublyLinkedList<T> {
+    fn eq(&self, other: &Self) -> bool {
+        let mut a = self.first.clone();
+        let mut b = other.first.clone();
+
+        loop{
+            match (a,b) {
+                (None, None) => return true,
+                (None, Some(_)) => return false,
+                (Some(_), None) => return false,
+                (Some(a_rc), Some(b_rc)) => {
+                    let a_ref = a_rc.borrow();
+                    let b_ref = b_rc.borrow();
+
+                    if a_ref.data != b_ref.data {
+                        return false;
+                    }
+
+                    a = a_ref.next.clone();
+                    b = b_ref.next.clone();
+                },
+            }
+        }
+    }
+}
+
 /// Display the linked list
 impl<T: Display> Display for DoublyLinkedList<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -218,6 +245,16 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_eq(){
+        let empty_list: DoublyLinkedList<i32> = doubly_linked_list![];
+        let empty_list_2: DoublyLinkedList<i32> = doubly_linked_list![];
+        assert_eq!(empty_list,empty_list_2);
+        assert_eq!(doubly_linked_list![1,2],doubly_linked_list![1,2]);
+        assert_ne!(doubly_linked_list![],doubly_linked_list![1]);
+        assert_ne!(doubly_linked_list![1,2],doubly_linked_list![1]);
+    }
+
+    #[test]
     fn test_doubly_linked_list() {
         let mut dll = DoublyLinkedList::new();
         dll.push_front(1);
@@ -231,22 +268,20 @@ mod tests {
     }
 
     #[test]
-    fn test_pop_front_empty(){
+    fn test_pop() {
+        let mut dll: DoublyLinkedList<i32> = doubly_linked_list![1,2,3,4];
+        // let a = dll.pop_front();
+        // assert_eq!(a , Some(1));
+        let b = dll.pop_back();
+        assert_eq!(b, Some(4));
+    }
+
+    #[test]
+    fn test_pop_empty(){
         let mut dll:DoublyLinkedList<i32> = DoublyLinkedList::new();
         let a = dll.pop_front();
-        println!("{:?}",a);
+        assert_eq!(a, None);
         let b = dll.pop_back();
-        println!("{:?}",b);
-    }
-
-    #[test]
-    fn test_pop_back() {
-        let mut dll: DoublyLinkedList<i32> = DoublyLinkedList::new();
-    }
-
-    #[test]
-    fn test_macro() {
-        let dll: DoublyLinkedList<i32> = doubly_linked_list![1, 2, 3, 4, 5];
-        println!("{}", dll)
+        assert_eq!(b, None);
     }
 }
