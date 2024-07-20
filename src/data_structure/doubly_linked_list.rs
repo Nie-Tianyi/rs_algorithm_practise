@@ -1,4 +1,4 @@
-use std::{ cell::RefCell, fmt::Display, rc::{ Rc, Weak } };
+use std::{cell::RefCell, fmt::Display, rc::{ Rc, Weak } };
 
 /// a doubly linked list
 pub struct DoublyLinkedList<T> {
@@ -11,18 +11,6 @@ pub struct ListNode<T> {
     data: T,
     next: Option<Rc<RefCell<ListNode<T>>>>,
     prev: Option<Weak<RefCell<ListNode<T>>>>,
-}
-/// Display the linked list
-impl<T: Display> Display for DoublyLinkedList<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "DoublyLinkedList(None ⇌")?;
-        let mut node = self.first.clone();
-        while let Some(r) = node {
-            write!(f, " {} ⇌", r.borrow().data)?;
-            node = r.borrow().next.clone();
-        }
-        write!(f, " None)")
-    }
 }
 
 impl<T> DoublyLinkedList<T> {
@@ -162,7 +150,41 @@ impl<T> DoublyLinkedList<T> {
             }
         }
     }
+
+    /// Delete one element at the end of the list
+    pub fn pop_back(&mut self) -> Option<T> {
+        self.last.take().and_then(|last_node_weak|{
+            last_node_weak.upgrade().map(|last_node_rc|{
+                let last_node = Rc::try_unwrap(last_node_rc)
+                    .ok()
+                    .expect("Rc has more than one strong reference")
+                    .into_inner();
+                let res = last_node.data;
+                self.last = last_node.prev;
+                if let Some(ref mut node_weak) = self.last {
+                    let node_rc = node_weak.upgrade().unwrap();
+                    let mut node = node_rc.borrow_mut();
+                    node.next = None;
+                }
+                res
+            })
+        })
+    }
 }
+
+/// Display the linked list
+impl<T: Display> Display for DoublyLinkedList<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "DoublyLinkedList(None ⇌")?;
+        let mut node = self.first.clone();
+        while let Some(r) = node {
+            write!(f, " {} ⇌", r.borrow().data)?;
+            node = r.borrow().next.clone();
+        }
+        write!(f, " None)")
+    }
+}
+
 
 /// Initializes a linked list and pushes elements into the list
 /// in reverse order.
@@ -205,17 +227,21 @@ mod tests {
         dll.push_back(5);
         dll.push_back(6);
 
-        let a = dll.pop_front();
-
-        println!("{}", dll);
-        println!("{}", a.unwrap())
+        assert_eq!(doubly_linked_list![3,2,1,4,5,6], dll)
     }
 
     #[test]
-    fn test_pop_empty(){
+    fn test_pop_front_empty(){
         let mut dll:DoublyLinkedList<i32> = DoublyLinkedList::new();
         let a = dll.pop_front();
         println!("{:?}",a);
+        let b = dll.pop_back();
+        println!("{:?}",b);
+    }
+
+    #[test]
+    fn test_pop_back() {
+        let mut dll: DoublyLinkedList<i32> = DoublyLinkedList::new();
     }
 
     #[test]

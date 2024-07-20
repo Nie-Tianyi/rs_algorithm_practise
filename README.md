@@ -92,13 +92,13 @@ In the rust implementation, to avoid the recursive reference, we use the `Rc<T>`
 
 ### 2. Queue
 
-![queue](/Users/nietianyi/RustroverProjects/rs_algorithm_practise/assets/images/queue.png)
+![queue](assets/images/queue.png)
 
 A **Queue** is a fundamental data structure in computer science that follows the First In, First Out (FIFO) principle. This means that the first element added to the queue will be the first one to be removed. Queues are used in various applications such as scheduling processes in operating systems, managing tasks in a print spooler, and handling asynchronous data transfers.
 
 ### 3. Binary Tree
 
-![](/Users/nietianyi/RustroverProjects/rs_algorithm_practise/assets/images/binary-tree.png)
+![binary tree](assets/images/binary-tree.png)
 
 A **Binary Tree** is a hierarchical data structure in which each node has at most two children, referred to as the left child and the right child. This structure is particularly useful for representing hierarchical relationships and is fundamental in various algorithms and applications.
 
