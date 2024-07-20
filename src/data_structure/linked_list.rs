@@ -6,18 +6,6 @@ use std::fmt::Display;
 /// this linked list will be displayed as ` a -> b -> c -> ... -> None`
 pub struct LinkedList<T>(Option<(T, Box<LinkedList<T>>)>);
 
-impl<T: Display> Display for LinkedList<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "LinkedList(")?;
-        let mut node = self;
-        while let Some((ref data, ref child)) = node.0 {
-            write!(f, "{} → ", data)?;
-            node = child;
-        }
-        write!(f, "None)")
-    }
-}
-
 impl<T: Display> LinkedList<T> {
     #[inline]
     pub fn new() -> Self {
@@ -125,6 +113,18 @@ impl<T: Display> LinkedList<T> {
         let (self_value, child) = self.0.take().unwrap();
 
         self.0 = Some((self_value, Box::new(LinkedList(Some((data, child))))));
+    }
+}
+
+impl<T: Display> Display for LinkedList<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "LinkedList(")?;
+        let mut node = self;
+        while let Some((ref data, ref child)) = node.0 {
+            write!(f, "{} → ", data)?;
+            node = child;
+        }
+        write!(f, "None)")
     }
 }
 
