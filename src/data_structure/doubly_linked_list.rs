@@ -153,6 +153,7 @@ impl<T> DoublyLinkedList<T> {
     }
 
     /// Delete one element at the end of the list
+    /// todo: bugs here
     pub fn pop_back(&mut self) -> Option<T> {
         self.last.take().and_then(|last_node_weak|{
             last_node_weak.upgrade().map(|last_node_rc|{
@@ -175,22 +176,23 @@ impl<T> DoublyLinkedList<T> {
 
 impl<T: PartialEq> PartialEq for DoublyLinkedList<T> {
     fn eq(&self, other: &Self) -> bool {
+        // init two pointers
         let mut a = self.first.clone();
         let mut b = other.first.clone();
-
+        // compare the elements in two lists one by one
         loop{
             match (a,b) {
-                (None, None) => return true,
-                (None, Some(_)) => return false,
+                (None, None) => return true, // both None, it is equal
+                (None, Some(_)) => return false, // one None one Some, not equal
                 (Some(_), None) => return false,
-                (Some(a_rc), Some(b_rc)) => {
+                (Some(a_rc), Some(b_rc)) => { // both Some, compare the value inside Option
                     let a_ref = a_rc.borrow();
                     let b_ref = b_rc.borrow();
 
                     if a_ref.data != b_ref.data {
                         return false;
                     }
-
+                    // move both pointers to next nodes
                     a = a_ref.next.clone();
                     b = b_ref.next.clone();
                 },
