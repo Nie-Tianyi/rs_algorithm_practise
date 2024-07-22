@@ -152,27 +152,66 @@ impl<T> DoublyLinkedList<T> {
         }
     }
 
-    /// Delete one element at the end of the list
-    /// todo: bugs here
+    /// Remove the last element of the list and returns it
+    /// 
+    /// This operation takes constant time, `O(1)`, because it only involves updating
+    /// a few pointers. If the list is empty, it returns `None`.
+    ///
+    /// # Returns
+    ///
+    /// - `Some(T)` - The value of the removed element if the list was not empty.
+    /// - `None` - If the list was empty.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the internal `Rc` has more than one strong reference.
+    /// This scenario should not occur in typical usage because the list itself should
+    /// be the only owner of its nodes.
+    /// 
+    /// # Examples
+    /// ```rust
+    /// use rs_algorithm_practise::data_structure::doubly_linked_list::DoublyLinkedList;
+    /// use rs_algorithm_practise::doubly_linked_list;
+    /// 
+    /// fn test_pop_back() {
+    ///     let mut dll = doubly_linked_list![1,2];
+    ///     assert_eq!(dll.pop_back(), Some(2));
+    ///     assert_eq!(dll.pop_back(), Some(1));
+    ///     assert_eq!(dll.pop_back(), None);
+    ///     assert_eq!(dll, doubly_linked_list![]);
+    /// }
+    /// 
+    /// ```
     pub fn pop_back(&mut self) -> Option<T> {
         self.last.take().and_then(|last_node_weak|{
-            last_node_weak.upgrade().map(|last_node_rc|{
-                let last_node = Rc::try_unwrap(last_node_rc)
-                    .ok()
-                    .expect("Rc has more than one strong reference")
-                    .into_inner();
-                let res = last_node.data;
-                self.last = last_node.prev;
-                if let Some(ref mut node_weak) = self.last {
-                    let node_rc = node_weak.upgrade().unwrap();
-                    let mut node = node_rc.borrow_mut();
-                    node.next = None;
-                }
-                res
-            })
+            let last_node_rc = last_node_weak
+                .upgrade()
+                .unwrap();
+            let last_node = last_node_rc.borrow();
+            let prev_node = last_node.prev.clone();
+            match prev_node {
+                Some(prev_node_weak) => {
+                    let prev_node_rc = prev_node_weak
+                        .upgrade()
+                        .unwrap();
+                    let mut prev_node = prev_node_rc.borrow_mut();
+                    prev_node.next = None;
+                    self.last = Some(prev_node_weak);
+                },
+                None => {
+                    self.last = None;
+                    self.first = None;
+                },
+            }
+            drop(last_node);
+            let last_node = Rc::try_unwrap(last_node_rc)
+                            .ok()
+                            .expect("Rc has more than one strong reference")
+                            .into_inner();
+            Some(last_node.data)
         })
     }
-}
+}   
 
 impl<T: PartialEq> PartialEq for DoublyLinkedList<T> {
     fn eq(&self, other: &Self) -> bool {
@@ -272,10 +311,21 @@ mod tests {
     #[test]
     fn test_pop() {
         let mut dll: DoublyLinkedList<i32> = doubly_linked_list![1,2,3,4];
-        // let a = dll.pop_front();
-        // assert_eq!(a , Some(1));
+        let a = dll.pop_front();
+        assert_eq!(a , Some(1));
         let b = dll.pop_back();
         assert_eq!(b, Some(4));
+    }
+
+    #[test]
+    fn test_pop_back() {
+        let mut dll = doubly_linked_list![1,2,3,4];
+        assert_eq!(dll.pop_back(), Some(4));
+        assert_eq!(dll.pop_back(), Some(3));
+        assert_eq!(dll.pop_back(), Some(2));
+        assert_eq!(dll.pop_back(), Some(1));
+        assert_eq!(dll.pop_back(), None);
+        assert_eq!(dll, doubly_linked_list![]);
     }
 
     #[test]
