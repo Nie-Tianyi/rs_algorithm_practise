@@ -53,7 +53,7 @@ impl<T: Clone> BinaryTree<T> {
         }
     }
 
-    pub fn breadth_first_traverse(&self) -> Vec<T> {
+    pub fn breadth_first_traversal(&self) -> Vec<T> {
         vec![]
     }
 }

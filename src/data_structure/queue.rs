@@ -24,7 +24,7 @@ pub struct Queue<T> {
     data: DoublyLinkedList<T>,
 }
 
-impl<T: Send> Queue<T> {
+impl<T> Queue<T> {
     /// Creates a new, empty `Queue`.
     #[inline]
     pub fn new() -> Self {
