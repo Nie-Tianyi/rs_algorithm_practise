@@ -101,7 +101,7 @@ impl<T> DoublyLinkedList<T> {
         self.first.take().map(|first_node_rc| {
             let first_node = Rc::try_unwrap(first_node_rc)
                 .ok()
-                .expect("Rc has more than one strong reference")
+                .expect("DoublyLinkedList::pop_front(): Rc has more than one strong reference")
                 .into_inner();
             let next_node = first_node.next;
             match next_node {
@@ -206,7 +206,7 @@ impl<T> DoublyLinkedList<T> {
             drop(last_node);
             let last_node = Rc::try_unwrap(last_node_rc)
                             .ok()
-                            .expect("Rc has more than one strong reference")
+                            .expect("DoublyLinkedList::pop_back(): Rc has more than one strong reference")
                             .into_inner();
             Some(last_node.data)
         })
