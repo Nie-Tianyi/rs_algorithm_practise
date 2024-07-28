@@ -1,3 +1,4 @@
+use std::cmp::max;
 use std::fmt::Display;
 
 pub struct BinaryTree<T>(Option<Box<TreeNode<T>>>);
@@ -8,7 +9,7 @@ pub struct TreeNode<T> {
     right_node: BinaryTree<T>,
 }
 
-impl<T: Display> Display for BinaryTree<T> {
+impl<T: Display + Clone> Display for BinaryTree<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "BinaryTree: {{ \n")?;
         write!(f, "}}")
@@ -24,6 +25,17 @@ impl<T> BinaryTree<T> {
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.0.is_none()
+    }
+
+    pub fn max_depth(&self) -> usize {
+        return match self.0 {
+            None => {
+                0
+            }
+            Some(ref node) => {
+                1 + max(node.left_node.max_depth(), node.right_node.max_depth())
+            }
+        };
     }
 }
 
@@ -85,7 +97,7 @@ mod tests {
 
     #[test]
     fn test_fmt() {
-        let mut bt: BinaryTree<i32> = BinaryTree::new();
+        let mut bt = BinaryTree::new();
         bt.add_sort(10);
         bt.add_sort(8);
         bt.add_sort(12);
@@ -99,5 +111,25 @@ mod tests {
         bt.postorder_traversal(&mut v);
 
         println!("{:?}", v)
+    }
+
+    #[test]
+    fn test_max_depth() {
+        let mut binary_tree = BinaryTree::new();
+
+        binary_tree.add_sort(10); // tree: 10
+        assert_eq!(binary_tree.max_depth(), 1);
+
+        binary_tree.add_sort(12); // tree: 10 [None,12]
+        assert_eq!(binary_tree.max_depth(), 2);
+
+        binary_tree.add_sort(11); // tree: 10 [None,12] [[None,None][11,None]]
+        assert_eq!(binary_tree.max_depth(), 3);
+
+        binary_tree.add_sort(13); // tree: 10 [None,12] [[None,None][11,13]]
+        assert_eq!(binary_tree.max_depth(), 3);
+
+        binary_tree.add_sort(9); // // tree: 10 [9,12] [[None,None][11,13]]
+        assert_eq!(binary_tree.max_depth(), 3);
     }
 }
