@@ -32,6 +32,7 @@ impl<T> BinaryTree<T> {
         self.0.is_none()
     }
 
+    /// calculate the depth of the tree **recursively**
     pub fn depth(&self) -> usize {
         match self.0 {
             None => {
