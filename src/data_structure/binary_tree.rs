@@ -11,11 +11,22 @@ pub struct TreeNode<T> {
 
 impl<T: Display + Clone> Display for BinaryTree<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let _arr = self.to_vec();
-        let depth = self.depth();
+        let arr = self.to_vec(); // nodes to be displayed
+        let mut iter = arr.iter();
+        let depth = self.depth(); // the depth of the tree
+                                  // let single_item_width = 4_usize; // one node takes up four spaces
+                                  // let max_level_width = 2_usize.pow(depth as u32 - 1) * single_item_width;
         write!(f, "BinaryTree: {{ \n")?;
-        for _level in 1..=depth{
-            unimplemented!()
+        for level in 1..=depth {
+            let num_of_items_to_display = 2_usize.pow(level as u32 - 1);
+            for _ in 1..=num_of_items_to_display {
+                let next_item = iter.next().unwrap();
+                match next_item {
+                    None => write!(f, "\tNone",)?,
+                    Some(data) => write!(f, "\t{}", data)?,
+                }
+            }
+            write!(f, "\n")?;
         }
         write!(f, "}}")
     }
@@ -34,12 +45,8 @@ impl<T> BinaryTree<T> {
 
     pub fn depth(&self) -> usize {
         match self.0 {
-            None => {
-                0
-            }
-            Some(ref node) => {
-                1 + max(node.left_node.depth(), node.right_node.depth())
-            }
+            None => 0,
+            Some(ref node) => 1 + max(node.left_node.depth(), node.right_node.depth()),
         }
     }
 }
@@ -152,13 +159,8 @@ mod tests {
         bt.add_sort(7);
         bt.add_sort(9);
         bt.add_sort(11);
-        bt.add_sort(13);
 
-        let mut v = Vec::new();
-
-        bt.postorder_traversal(&mut v);
-
-        println!("{:?}", v)
+        println!("{}", bt)
     }
 
     #[test]
@@ -192,12 +194,21 @@ mod tests {
         assert_eq!(vec![Some(10), None, Some(12)], binary_tree.to_vec());
 
         binary_tree.add_sort(11); // tree: 10 [None,12] [[None,None][11,None]]
-        assert_eq!(vec![Some(10), None, Some(12), None, None, Some(11), None], binary_tree.to_vec());
+        assert_eq!(
+            vec![Some(10), None, Some(12), None, None, Some(11), None],
+            binary_tree.to_vec()
+        );
 
         binary_tree.add_sort(13); // tree: 10 [None,12] [[None,None][11,13]]
-        assert_eq!(vec![Some(10), None, Some(12), None, None, Some(11), Some(13)], binary_tree.to_vec());
+        assert_eq!(
+            vec![Some(10), None, Some(12), None, None, Some(11), Some(13)],
+            binary_tree.to_vec()
+        );
 
         binary_tree.add_sort(9); // tree: 10 [9,12] [[None,None][11,13]]
-        assert_eq!(vec![Some(10), Some(9), Some(12), None, None, Some(11), Some(13)], binary_tree.to_vec());
+        assert_eq!(
+            vec![Some(10), Some(9), Some(12), None, None, Some(11), Some(13)],
+            binary_tree.to_vec()
+        );
     }
 }
