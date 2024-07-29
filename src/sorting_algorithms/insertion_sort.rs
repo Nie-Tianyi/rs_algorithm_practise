@@ -9,7 +9,7 @@ pub fn insertion_sort<T: Ord + Copy>(array: &mut Vec<T>) {
         let current = array[i];
         let mut j = (i as isize) - 1;
 
-        // Move elements of array[0..i-1], that are greater than key,
+        // Move elements of array[0...i-1], that are greater than key,
         // to one position ahead of their current position
         while j >= 0 && array[j as usize] > current {
             array[(j + 1) as usize] = array[j as usize];
