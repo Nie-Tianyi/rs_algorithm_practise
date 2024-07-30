@@ -14,14 +14,24 @@ impl<T: Display + Clone> Display for BinaryTree<T> {
         let arr = self.to_vec(); // nodes to be displayed
         let mut iter = arr.iter();
         let depth = self.depth(); // the depth of the tree
+        let max_width = 2_usize.pow(depth as u32 - 1) * 2;
+
         write!(f, "BinaryTree: {{ \n")?;
-        for level in 1..=depth {
-            let num_of_items_to_display = 2_usize.pow(level as u32 - 1);
-            for _ in 1..=num_of_items_to_display {
-                let next_item = iter.next().unwrap();
-                match next_item {
-                    None => write!(f, "\tNone",)?,
-                    Some(data) => write!(f, "\t{}", data)?,
+        for level in 0..depth {
+            let num_of_items_to_display = 2_usize.pow(level as u32);
+            let spaces_before = max_width / (2_usize.pow(level as u32 + 1));
+            let space_between_items = spaces_before * 2 - 1;
+
+            let space_before = " ".repeat(spaces_before);
+            let space_between = " ".repeat(space_between_items);
+
+            write!(f, "{}", space_before)?;
+            for _ in 0..num_of_items_to_display {
+                if let Some(next_item) = iter.next() {
+                    match next_item {
+                        None => write!(f, "None{}", space_between)?,
+                        Some(data) => write!(f, "{}{}", data, space_between)?,
+                    }
                 }
             }
             write!(f, "\n")?;
