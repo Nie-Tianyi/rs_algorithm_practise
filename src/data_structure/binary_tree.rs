@@ -14,8 +14,6 @@ impl<T: Display + Clone> Display for BinaryTree<T> {
         let arr = self.to_vec(); // nodes to be displayed
         let mut iter = arr.iter();
         let depth = self.depth(); // the depth of the tree
-                                  // let single_item_width = 4_usize; // one node takes up four spaces
-                                  // let max_level_width = 2_usize.pow(depth as u32 - 1) * single_item_width;
         write!(f, "BinaryTree: {{ \n")?;
         for level in 1..=depth {
             let num_of_items_to_display = 2_usize.pow(level as u32 - 1);
@@ -43,6 +41,7 @@ impl<T> BinaryTree<T> {
         self.0.is_none()
     }
 
+    /// calculate the depth of the tree **recursively**
     pub fn depth(&self) -> usize {
         match self.0 {
             None => 0,
