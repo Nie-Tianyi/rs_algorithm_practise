@@ -1,8 +1,8 @@
 use rayon;
 /// pivot function takes the first element in an array,
 /// and moves it to its right place.
-/// every elements smaller than the first element
-/// should be before it, and every elements
+/// every element smaller than the first element
+/// should be before it, and every element
 /// greater than it, should be after it.
 ///
 /// # Arguments:
@@ -32,7 +32,7 @@ pub fn pivot<T: Ord>(array: &mut [T]) -> usize {
 
 /// quick sort is another recursive sorting algorithm.
 /// it picks up the first element of the array, and
-/// moves it to its right place. than sort the rest of
+/// moves it to its right place. then sort the rest of
 /// the array with the same method.
 ///
 /// # Arguments:
@@ -57,7 +57,7 @@ pub fn quick_sort<T: Ord>(array: &mut [T]) {
 /// `array: &mut [T]`: array to be sorted, a mutable slice. T must
 /// implements trait `Ord` and `Send`.
 /// 
-/// `Send` is a auto trait, which means it will be implemented
+/// `Send` is an auto trait, which means it will be implemented
 /// automatically if all of its member variables has implemented
 /// this trait
 pub fn rayon_quick_sort<T: Ord + Send>(array: &mut [T]) {

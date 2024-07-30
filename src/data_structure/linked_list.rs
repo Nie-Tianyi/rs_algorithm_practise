@@ -52,10 +52,10 @@ impl<T: Display> LinkedList<T> {
         match self.0.take() {
             Some((data, child)) => {
                 self.0 = child.0;
-                return Some(data);
+                Some(data)
             }
             None => {
-                return None;
+                None
             }
         }
     }

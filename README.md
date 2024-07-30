@@ -6,7 +6,7 @@
 
 Bubble sort is one of the simplest sorting algorithms, the time complexity of this sorting algorithms is $O(n^2)$
 
-the pseudo code of the this sorting algorithm can be expressed as:
+the pseudocode of this sorting algorithm can be expressed as:
 
 ```pseudocode
 for i in range from 0 to array_length:
@@ -14,11 +14,11 @@ for i in range from 0 to array_length:
 		swap array[j] with array[j+1] if array[j] > array[j+1] 
 ```
 
-A better version of this algorithm is add a flag in the first iteration. If the array is already sorted, then return it directly.
+A better version of this algorithm is added a flag in the first iteration. If the array is already sorted, then return it directly.
 
 ### 2. Selection Sort
 
-Selection Sort is another simple sorting algorithm. it selects the smallest element in the rest of the array and place it  ahead. its pseudo code can be expresses as:
+Selection Sort is another simple sorting algorithm. it selects the smallest element in the rest of the array and place it  ahead. its pseudocode can be expresses as:
 
 ```pseudocode
 for i in range from 0 to array_length -1:
@@ -30,7 +30,7 @@ The time complexity is also $O(n^2)$, because finding the smallest element in an
 
 ### 3. Insertion Sort
 
-Insertion Sort is a simple sorting algorithm as well. It picks one element at a time and inserts the element into the place where it should be.  The pseudo code can be written as:
+Insertion Sort is a simple sorting algorithm as well. It picks one element at a time and inserts the element into the place where it should be.  The pseudocode can be written as:
 
 ```pseudocode
 for i in the range from 1 to array_length:
@@ -42,7 +42,7 @@ The time complexity of this algorithm is $O(n^2)$.
 
 ### 4. Merge Sort
 
-Merge Sort is a recursive sorting algorithm. It divides the original array into two pieces of equal size, and sort them respectively. The pseudo code of this algorithm is:
+Merge Sort is a recursive sorting algorithm. It divides the original array into two pieces of equal size, and sort them respectively. The pseudocode of this algorithm is:
 
 ```pseudocode
 divide the array into left half, right half:
@@ -59,7 +59,7 @@ The time complexity of this sorting algorithm is $O(n\log_2 n)$ , but it takes l
 
 ### 5. Quick Sort
 
-Quick Sort is another recursive sorting algorithm. It use a unique techniques called "pivot". "pivot" is select an element in an array, and moves it to its rights place, where all the elements before it are smaller than it, and all the elements after it are greater than it. The pseudo code for pivot can be expressed as:
+Quick Sort is another recursive sorting algorithm. It uses a unique techniques called "pivot". "pivot" is select an element in an array, and moves it to its rights place, where all the elements before it are smaller than it, and all the elements after it are greater than it. The pseudocode for pivot can be expressed as:
 
 ```pseudocode
 select an element in the array, lets call it pivot point (usually the first element)
@@ -68,7 +68,7 @@ for every elements in array:
 		moves it before the pivot point,
 ```
 
-The pseudo code for the Quick Sort then can be expressed as:
+The pseudocode for the Quick Sort then can be expressed as:
 
 ```pseudocode
 pivot the array.
