@@ -1,4 +1,4 @@
-use std::{cell::RefCell, fmt::Display, rc::{ Rc, Weak } };
+use std::{cell::RefCell, fmt::Display, rc::{Rc, Weak}};
 
 /// a doubly linked list
 #[derive(Debug)]
@@ -153,7 +153,7 @@ impl<T> DoublyLinkedList<T> {
     }
 
     /// Remove the last element of the list and returns it
-    /// 
+    ///
     /// This operation takes constant time, `O(1)`, because it only involves updating
     /// a few pointers. If the list is empty, it returns `None`.
     ///
@@ -167,12 +167,12 @@ impl<T> DoublyLinkedList<T> {
     /// This function will panic if the internal `Rc` has more than one strong reference.
     /// This scenario should not occur in typical usage because the list itself should
     /// be the only owner of its nodes.
-    /// 
+    ///
     /// # Examples
     /// ```rust
     /// use rs_algorithm_practise::data_structure::doubly_linked_list::DoublyLinkedList;
     /// use rs_algorithm_practise::doubly_linked_list;
-    /// 
+    ///
     /// fn test_pop_back() {
     ///     let mut dll = doubly_linked_list![1,2];
     ///     assert_eq!(dll.pop_back(), Some(2));
@@ -180,10 +180,10 @@ impl<T> DoublyLinkedList<T> {
     ///     assert_eq!(dll.pop_back(), None);
     ///     assert_eq!(dll, doubly_linked_list![]);
     /// }
-    /// 
+    ///
     /// ```
     pub fn pop_back(&mut self) -> Option<T> {
-        self.last.take().and_then(|last_node_weak|{
+        self.last.take().map(|last_node_weak| {
             let last_node_rc = last_node_weak
                 .upgrade()
                 .unwrap();
@@ -197,21 +197,21 @@ impl<T> DoublyLinkedList<T> {
                     let mut prev_node = prev_node_rc.borrow_mut();
                     prev_node.next = None;
                     self.last = Some(prev_node_weak);
-                },
+                }
                 None => {
                     self.last = None;
                     self.first = None;
-                },
+                }
             }
             drop(last_node);
             let last_node = Rc::try_unwrap(last_node_rc)
-                            .ok()
-                            .expect("DoublyLinkedList::pop_back(): Rc has more than one strong reference")
-                            .into_inner();
-            Some(last_node.data)
+                .ok()
+                .expect("DoublyLinkedList::pop_back(): Rc has more than one strong reference")
+                .into_inner();
+            last_node.data
         })
     }
-}   
+}
 
 impl<T: PartialEq> PartialEq for DoublyLinkedList<T> {
     fn eq(&self, other: &Self) -> bool {
@@ -219,8 +219,8 @@ impl<T: PartialEq> PartialEq for DoublyLinkedList<T> {
         let mut a = self.first.clone();
         let mut b = other.first.clone();
         // compare the elements in two lists one by one
-        loop{
-            match (a,b) {
+        loop {
+            match (a, b) {
                 (None, None) => return true, // both None, it is equal
                 (None, Some(_)) => return false, // one None one Some, not equal
                 (Some(_), None) => return false,
@@ -234,9 +234,15 @@ impl<T: PartialEq> PartialEq for DoublyLinkedList<T> {
                     // move both pointers to next nodes
                     a = a_ref.next.clone();
                     b = b_ref.next.clone();
-                },
+                }
             }
         }
+    }
+}
+
+impl<T> Default for DoublyLinkedList<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -286,13 +292,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_eq(){
+    fn test_eq() {
         let empty_list: DoublyLinkedList<i32> = doubly_linked_list![];
         let empty_list_2: DoublyLinkedList<i32> = doubly_linked_list![];
-        assert_eq!(empty_list,empty_list_2);
-        assert_eq!(doubly_linked_list![1,2],doubly_linked_list![1,2]);
-        assert_ne!(doubly_linked_list![],doubly_linked_list![1]);
-        assert_ne!(doubly_linked_list![1,2],doubly_linked_list![1]);
+        assert_eq!(empty_list, empty_list_2);
+        assert_eq!(doubly_linked_list![1,2], doubly_linked_list![1,2]);
+        assert_ne!(doubly_linked_list![], doubly_linked_list![1]);
+        assert_ne!(doubly_linked_list![1,2], doubly_linked_list![1]);
     }
 
     #[test]
@@ -312,7 +318,7 @@ mod tests {
     fn test_pop() {
         let mut dll: DoublyLinkedList<i32> = doubly_linked_list![1,2,3,4];
         let a = dll.pop_front();
-        assert_eq!(a , Some(1));
+        assert_eq!(a, Some(1));
         let b = dll.pop_back();
         assert_eq!(b, Some(4));
     }
@@ -329,8 +335,8 @@ mod tests {
     }
 
     #[test]
-    fn test_pop_empty(){
-        let mut dll:DoublyLinkedList<i32> = DoublyLinkedList::new();
+    fn test_pop_empty() {
+        let mut dll: DoublyLinkedList<i32> = DoublyLinkedList::new();
         let a = dll.pop_front();
         assert_eq!(a, None);
         let b = dll.pop_back();

@@ -4,7 +4,7 @@
 ///
 /// `array: &mut Vec<T>` an unsorted array, where
 /// T must implement `Ord` and `Copy`
-pub fn insertion_sort<T: Ord + Copy>(array: &mut Vec<T>) {
+pub fn insertion_sort<T: Ord + Copy>(array: &mut [T]) {
     for i in 1..array.len() {
         let current = array[i];
         let mut j = (i as isize) - 1;

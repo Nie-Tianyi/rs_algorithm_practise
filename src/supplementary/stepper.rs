@@ -1,3 +1,4 @@
+#[warn(dead_code)]
 pub struct Stepper{
     current: i32,
     step: i32,

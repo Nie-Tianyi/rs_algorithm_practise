@@ -6,14 +6,14 @@ use std::fmt::Display;
 /// this linked list will be displayed as ` a -> b -> c -> ... -> None`
 pub struct LinkedList<T>(Option<(T, Box<LinkedList<T>>)>);
 
-impl<T: Display> LinkedList<T> {
+impl<T> LinkedList<T> {
     #[inline]
     pub fn new() -> Self {
         LinkedList(None)
     }
 
     #[inline]
-    pub fn is_empty(&self) -> bool{
+    pub fn is_empty(&self) -> bool {
         self.0.is_none()
     }
 
@@ -113,6 +113,12 @@ impl<T: Display> LinkedList<T> {
         let (self_value, child) = self.0.take().unwrap();
 
         self.0 = Some((self_value, Box::new(LinkedList(Some((data, child))))));
+    }
+}
+
+impl<T> Default for LinkedList<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

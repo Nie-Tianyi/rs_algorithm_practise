@@ -5,7 +5,7 @@
 /// # Arguments:
 /// `array: &mut Vec<T>` is an unsorted array, where T
 /// must implements trait `Ord`
-pub fn bubble_sort<T: Ord>(array: &mut Vec<T>) {
+pub fn bubble_sort<T: Ord>(array: &mut [T]) {
     // if the only has one element, return directly
     if array.len() <= 1 {
         return;
@@ -27,7 +27,7 @@ pub fn bubble_sort<T: Ord>(array: &mut Vec<T>) {
 /// # Arguments:
 /// `array: &mut Vec<T>` is an unsorted array, where T
 /// must implements trait `Ord`
-pub fn better_bubble_sort<T: Ord>(array: &mut Vec<T>) {
+pub fn better_bubble_sort<T: Ord>(array: &mut [T]) {
     // if the only has one element, return directly
     if array.len() <= 1 {
         return;

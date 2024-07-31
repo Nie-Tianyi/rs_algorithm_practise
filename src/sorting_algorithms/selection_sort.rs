@@ -6,7 +6,7 @@
 /// # Arguments:
 /// `array: &mut Vec<T>`, and unsorted array, where T must
 /// implement trait `PartialOrd`
-pub fn selection_sort<T: PartialOrd>(array: &mut Vec<T>) {
+pub fn selection_sort<T: PartialOrd>(array: &mut [T]) {
     for i in 0..array.len() - 1_usize {
         // find the smallest in the rest of the array
         let mut smallest = i;

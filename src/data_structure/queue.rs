@@ -64,3 +64,9 @@ impl<T> Queue<T> {
         self.data.pop_front()
     }
 }
+
+impl<T> Default for Queue<T>{
+    fn default() -> Self {
+        Self::new()
+    }
+}

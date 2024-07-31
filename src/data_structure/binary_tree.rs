@@ -5,6 +5,7 @@ pub struct BinaryTree<T>(Option<Box<TreeNode<T>>>);
 
 pub struct TreeNode<T> {
     data: T,
+    height: usize, // for balancing the tree
     left_node: BinaryTree<T>,
     right_node: BinaryTree<T>,
 }
@@ -16,7 +17,7 @@ impl<T: Display + Clone> Display for BinaryTree<T> {
         let depth = self.depth(); // the depth of the tree
         let max_width = 2_usize.pow(depth as u32 - 1) * 2;
 
-        write!(f, "BinaryTree: {{ \n")?;
+        writeln!(f, "BinaryTree: {{ ")?;
         for level in 0..depth {
             let num_of_items_to_display = 2_usize.pow(level as u32);
             let spaces_before = max_width / (2_usize.pow(level as u32 + 1));
@@ -34,7 +35,7 @@ impl<T: Display + Clone> Display for BinaryTree<T> {
                     }
                 }
             }
-            write!(f, "\n")?;
+            writeln!(f)?;
         }
         write!(f, "}}")
     }
@@ -51,11 +52,28 @@ impl<T> BinaryTree<T> {
         self.0.is_none()
     }
 
-    /// calculate the depth of the tree **recursively**
+    /// calculate the depth of the tree **recursively**.
+    ///
+    /// this function should have the same result as `BinaryTree::height(&self)`
     pub fn depth(&self) -> usize {
         match self.0 {
             None => 0,
             Some(ref node) => 1 + max(node.left_node.depth(), node.right_node.depth()),
+        }
+    }
+    /// get the height of the node
+    #[inline]
+    pub fn height(&self) -> usize {
+        match self.0 {
+            None => 0,
+            Some(ref node) => node.height,
+        }
+    }
+    /// set the node height when add a new node
+    #[inline]
+    fn set_height(&mut self) {
+        if let Some(ref mut node) = self.0 {
+            node.height = 1 + max(node.left_node.height(), node.right_node.height());
         }
     }
 }
@@ -123,7 +141,7 @@ impl<T: Clone> BinaryTree<T> {
     // n stand for parent node index, b stand for bias (left node's bias is 1, right node's bias is 2)
     fn fill(&self, arr: &mut Vec<Option<T>>, n: usize, b: usize) {
         match self.0 {
-            None => return,
+            None => (),
             Some(ref node) => {
                 let index = 2 * n + b;
                 arr[index] = Some(node.data.clone());
@@ -147,11 +165,19 @@ impl<T: Ord> BinaryTree<T> {
             None => {
                 self.0 = Some(Box::new(TreeNode {
                     data,
+                    height: 0,
                     left_node: BinaryTree::new(),
                     right_node: BinaryTree::new(),
                 }));
             }
         }
+        self.set_height();
+    }
+}
+
+impl<T> Default for BinaryTree<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
