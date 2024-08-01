@@ -10,6 +10,42 @@ pub struct TreeNode<T> {
     right_node: BinaryTree<T>,
 }
 
+impl<T> TreeNode<T> {
+    pub fn rotate_left(mut self) -> Box<Self> {
+        // take the right node of current node, if it is None, then it cannot rotate
+        let mut res = match self.right_node.0.take() {
+            None => return Box::new(self),
+            Some(res) => res,
+        };
+        // change the left node of current node to right
+        self.right_node = BinaryTree(res.left_node.0.take());
+        self.right_node.set_height();
+        // append current node to the right branch of the orginal right node
+        res.left_node = BinaryTree(Some(Box::new(self)));
+        res.left_node.set_height();
+        // set height, return the original right node to be the root node
+        res.height = 1 + max(res.right_node.height(), res.right_node.height());
+        res
+    }
+
+    pub fn rotate_right(mut self) -> Box<Self> {
+        // take the right node of current node, if it is None, then it cannot rotate
+        let mut res = match self.left_node.0.take() {
+            None => return Box::new(self),
+            Some(res) => res,
+        };
+        // change the left node of current node to right
+        self.left_node = BinaryTree(res.right_node.0.take());
+        self.left_node.set_height();
+        // append current node to the right branch of the orginal right node
+        res.right_node = BinaryTree(Some(Box::new(self)));
+        res.right_node.set_height();
+        // set height, return the original right node to be the root node
+        res.height = 1 + max(res.right_node.height(), res.right_node.height());
+        res
+    }
+}
+
 impl<T: Display + Clone> Display for BinaryTree<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let arr = self.to_vec(); // nodes to be displayed
@@ -30,7 +66,7 @@ impl<T: Display + Clone> Display for BinaryTree<T> {
             for _ in 0..num_of_items_to_display {
                 if let Some(next_item) = iter.next() {
                     match next_item {
-                        None => write!(f, "None{}", space_between)?,
+                        None => write!(f, "N{}", space_between)?,
                         Some(data) => write!(f, "{}{}", data, space_between)?,
                     }
                 }
@@ -52,9 +88,23 @@ impl<T> BinaryTree<T> {
         self.0.is_none()
     }
 
+    #[inline]
+    pub fn rotate_left(&mut self) {
+        self.0 = self.0.take().map(
+            |node| node.rotate_left()
+        )
+    }
+
+    #[inline]
+    pub fn rotate_right(&mut self) {
+        self.0 = self.0.take().map(
+            |node| node.rotate_right()
+        )
+    }
+
     /// calculate the depth of the tree **recursively**.
     ///
-    /// this function should have the same result as `BinaryTree::height(&self)`
+    /// th is function should have the same result as `BinaryTree::height(&self)`
     pub fn depth(&self) -> usize {
         match self.0 {
             None => 0,
@@ -154,12 +204,23 @@ impl<T: Clone> BinaryTree<T> {
 
 impl<T: Ord> BinaryTree<T> {
     pub fn add_sort(&mut self, data: T) {
-        match self.0 {
+        let balanceing_factor = match self.0 {
             Some(ref mut bd) => {
                 if data < bd.data {
                     bd.left_node.add_sort(data);
+                    if bd.left_node.height() - bd.right_node.height() > 1 {
+                        1
+                    }else {
+                        0
+                    }
+
                 } else {
                     bd.right_node.add_sort(data);
+                    if bd.right_node.height() - bd.left_node.height() > 1 {
+                        -1
+                    }else {
+                        0 
+                    }
                 }
             }
             None => {
@@ -169,9 +230,15 @@ impl<T: Ord> BinaryTree<T> {
                     left_node: BinaryTree::new(),
                     right_node: BinaryTree::new(),
                 }));
+                0
             }
+        };
+        
+        match balanceing_factor{
+            1 => self.rotate_right(),
+            -1 => self.rotate_left(),
+            _ => self.set_height(),
         }
-        self.set_height();
     }
 }
 
@@ -245,5 +312,28 @@ mod tests {
             vec![Some(10), Some(9), Some(12), None, None, Some(11), Some(13)],
             binary_tree.to_vec()
         );
+    }
+
+    #[test]
+    fn test_rotate() {
+        let mut binary_tree = BinaryTree::new();
+        binary_tree.add_sort(1);
+        binary_tree.add_sort(2);
+        binary_tree.add_sort(3);
+        println!("{}", binary_tree);
+
+        binary_tree.rotate_left();
+        println!("{}", binary_tree);
+
+    }
+
+    #[test]
+    fn test_add_sort() {
+        let mut bt = BinaryTree::new();
+        for i in 0..20 {
+            bt.add_sort(i);
+            println!("{}",bt);
+        }
+
     }
 }
