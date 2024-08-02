@@ -44,8 +44,8 @@ impl<T> TreeNode<T> {
         res.height = 1 + max(res.right_node.height(), res.right_node.height());
         res
     }
-    /// return the balacing factor of a node,
-    /// that is the hight of the left node minus the height of right node
+    /// return the balancing factor of a node,
+    /// that is the height of the left node minus the height of right node
     #[inline]
     pub fn balancing_factor(&self) -> isize {
         self.left_node.height() as isize - self.right_node.height() as isize
