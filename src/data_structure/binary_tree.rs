@@ -29,15 +29,15 @@ impl<T> TreeNode<T> {
     }
 
     pub fn rotate_right(mut self) -> Box<Self> {
-        // take the right node of current node, if it is None, then it cannot rotate
+        // take the left node of current node, if it is None, then it cannot rotate
         let mut res = match self.left_node.0.take() {
             None => return Box::new(self),
             Some(res) => res,
         };
-        // change the left node of current node to right
+        // change the right node of current node to left
         self.left_node = BinaryTree(res.right_node.0.take());
         self.left_node.set_height();
-        // append current node to the right branch of the original right node
+        // append current node to the left branch of the original left node
         res.right_node = BinaryTree(Some(Box::new(self)));
         res.right_node.set_height();
         // set height, return the original right node to be the root node
