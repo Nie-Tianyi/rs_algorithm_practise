@@ -44,6 +44,12 @@ impl<T> TreeNode<T> {
         res.height = 1 + max(res.right_node.height(), res.right_node.height());
         res
     }
+    /// return the balacing factor of a node,
+    /// that is the hight of the left node minus the height of right node
+    #[inline]
+    pub fn balacing_factor(&self) -> isize {
+        self.left_node.height() as isize - self.right_node.height() as isize
+    }
 }
 
 impl<T: Display + Clone> Display for BinaryTree<T> {
@@ -208,19 +214,11 @@ impl<T: Ord> BinaryTree<T> {
             Some(ref mut bd) => {
                 if data < bd.data {
                     bd.left_node.add_sort(data);
-                    if bd.left_node.height() - bd.right_node.height() > 1 {
-                        1
-                    }else {
-                        0
-                    }
+                    bd.balacing_factor()
 
                 } else {
                     bd.right_node.add_sort(data);
-                    if bd.right_node.height() - bd.left_node.height() > 1 {
-                        -1
-                    }else {
-                        0 
-                    }
+                    bd.balacing_factor()
                 }
             }
             None => {
@@ -235,9 +233,9 @@ impl<T: Ord> BinaryTree<T> {
         };
         
         match balanceing_factor{
-            1 => self.rotate_right(),
-            -1 => self.rotate_left(),
-            _ => self.set_height(),
+            1.. => self.rotate_right(), // in the rotation, we have set height
+            ..-1 => self.rotate_left(),
+            -1..1 => self.set_height(),
         }
     }
 }
