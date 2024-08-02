@@ -1,4 +1,4 @@
-use std::cmp::max;
+use std::cmp::{max, Ordering};
 use std::fmt::Display;
 
 pub struct BinaryTree<T>(Option<Box<TreeNode<T>>>);
@@ -46,9 +46,21 @@ impl<T> TreeNode<T> {
     }
     /// return the balancing factor of a node,
     /// that is the height of the left node minus the height of right node
-    #[inline]
     pub fn balancing_factor(&self) -> isize {
-        self.left_node.height() as isize - self.right_node.height() as isize
+        let left_height = self.left_node.height();
+        let right_height = self.right_node.height();
+
+        match left_height.cmp(&right_height) {
+            Ordering::Less => {
+                - ((right_height - left_height) as isize)
+            }
+            Ordering::Equal => {
+                0_isize
+            }
+            Ordering::Greater => {
+                (left_height - right_height) as isize
+            }
+        }
     }
 }
 
