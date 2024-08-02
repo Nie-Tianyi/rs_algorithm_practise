@@ -37,7 +37,7 @@ impl<T> TreeNode<T> {
         // change the left node of current node to right
         self.left_node = BinaryTree(res.right_node.0.take());
         self.left_node.set_height();
-        // append current node to the right branch of the orginal right node
+        // append current node to the right branch of the original right node
         res.right_node = BinaryTree(Some(Box::new(self)));
         res.right_node.set_height();
         // set height, return the original right node to be the root node
