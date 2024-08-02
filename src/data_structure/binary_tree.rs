@@ -20,7 +20,7 @@ impl<T> TreeNode<T> {
         // change the left node of current node to right
         self.right_node = BinaryTree(res.left_node.0.take());
         self.right_node.set_height();
-        // append current node to the right branch of the orginal right node
+        // append current node to the right branch of the original right node
         res.left_node = BinaryTree(Some(Box::new(self)));
         res.left_node.set_height();
         // set height, return the original right node to be the root node
@@ -210,7 +210,7 @@ impl<T: Clone> BinaryTree<T> {
 
 impl<T: Ord> BinaryTree<T> {
     pub fn add_sort(&mut self, data: T) {
-        let balanceing_factor = match self.0 {
+        let balancing_factor = match self.0 {
             Some(ref mut bd) => {
                 if data < bd.data {
                     bd.left_node.add_sort(data);
@@ -232,7 +232,7 @@ impl<T: Ord> BinaryTree<T> {
             }
         };
         
-        match balanceing_factor{
+        match balancing_factor {
             1.. => self.rotate_right(), // in the rotation, we have set height
             ..-1 => self.rotate_left(),
             -1..1 => self.set_height(),
