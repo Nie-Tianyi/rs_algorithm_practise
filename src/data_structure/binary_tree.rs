@@ -1,8 +1,11 @@
 use std::cmp::{max, Ordering};
+use std::collections::VecDeque;
 use std::fmt::Display;
 
+/// a Balanced Binary Tree
 pub struct BinaryTree<T>(Option<Box<TreeNode<T>>>);
 
+/// Tree node of the binary tree
 pub struct TreeNode<T> {
     data: T,
     height: usize, // for balancing the tree
@@ -11,6 +14,15 @@ pub struct TreeNode<T> {
 }
 
 impl<T> TreeNode<T> {
+    /// Rotates the current node to the left.
+    ///
+    /// This operation is used to maintain the balance of the binary tree.
+    /// It takes the right child of the current node and makes it the new root of the subtree,
+    /// with the current node becoming the left child of the new root.
+    ///
+    /// # Returns
+    ///
+    /// A `Box` containing the new root of the subtree after the rotation.
     pub fn rotate_left(mut self) -> Box<Self> {
         // take the right node of current node, if it is None, then it cannot rotate
         let mut res = match self.right_node.0.take() {
@@ -28,6 +40,15 @@ impl<T> TreeNode<T> {
         res
     }
 
+    /// Rotates the current node to the right.
+    ///
+    /// This operation is used to maintain the balance of the binary tree.
+    /// It takes the left child of the current node and makes it the new root of the subtree,
+    /// with the current node becoming the right child of the new root.
+    ///
+    /// # Returns
+    ///
+    /// A `Box` containing the new root of the subtree after the rotation.
     pub fn rotate_right(mut self) -> Box<Self> {
         // take the left node of current node, if it is None, then it cannot rotate
         let mut res = match self.left_node.0.take() {
@@ -52,7 +73,7 @@ impl<T> TreeNode<T> {
 
         match left_height.cmp(&right_height) {
             Ordering::Less => {
-                - ((right_height - left_height) as isize)
+                -((right_height - left_height) as isize)
             }
             Ordering::Equal => {
                 0_isize
@@ -96,23 +117,25 @@ impl<T: Display + Clone> Display for BinaryTree<T> {
 }
 
 impl<T> BinaryTree<T> {
+    /// intiate an empty binary tree
     #[inline]
     pub fn new() -> Self {
         BinaryTree(None)
     }
-
+    /// # Returns
+    /// a boolen value that whether a Tree is empty
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.0.is_none()
     }
-
+    /// rotate the root node of the binary tree one node left
     #[inline]
     pub fn rotate_left(&mut self) {
         self.0 = self.0.take().map(
             |node| node.rotate_left()
         )
     }
-
+    /// rotate the root node of the binary tree one node right
     #[inline]
     pub fn rotate_right(&mut self) {
         self.0 = self.0.take().map(
@@ -122,7 +145,10 @@ impl<T> BinaryTree<T> {
 
     /// calculate the depth of the tree **recursively**.
     ///
-    /// th is function should have the same result as `BinaryTree::height(&self)`
+    /// this function should have the same result as `BinaryTree::height(&self)`
+    ///
+    /// # Returns
+    /// the height of the root node
     pub fn depth(&self) -> usize {
         match self.0 {
             None => 0,
@@ -130,6 +156,12 @@ impl<T> BinaryTree<T> {
         }
     }
     /// get the height of the node
+    ///
+    /// if the node is None, then return 0 directly;
+    /// if it is not None, return its height.
+    ///
+    /// # Returns
+    /// the height of the root node, it is also the height of the whole tree
     #[inline]
     pub fn height(&self) -> usize {
         match self.0 {
@@ -137,7 +169,7 @@ impl<T> BinaryTree<T> {
             Some(ref node) => node.height,
         }
     }
-    /// set the node height when add a new node
+    /// set the node height when adding a new node
     #[inline]
     fn set_height(&mut self) {
         if let Some(ref mut node) = self.0 {
@@ -147,7 +179,30 @@ impl<T> BinaryTree<T> {
 }
 
 impl<T: Clone> BinaryTree<T> {
-    /// traverse the binary tree in preorder **recursively**
+    /// Traverse the binary tree in preorder **recursively**.
+    ///
+    /// This method performs a preorder traversal of the binary tree, visiting the root node first,
+    /// then the left subtree, and finally the right subtree. The data of each visited node is
+    /// pushed into the provided vector.
+    ///
+    /// # Arguments
+    ///
+    /// * `v` - A mutable reference to a vector where the data of the visited nodes will be stored.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use rs_algorithm_practise::data_structure::binary_tree::BinaryTree;
+    ///
+    /// let mut tree = BinaryTree::new();
+    /// tree.add_sort(10);
+    /// tree.add_sort(5);
+    /// tree.add_sort(15);
+    ///
+    /// let mut result = Vec::new();
+    /// tree.preorder_traversal(&mut result);
+    /// assert_eq!(result, vec![10, 5, 15]);
+    /// ```
     pub fn preorder_traversal(&self, v: &mut Vec<T>) {
         if let Some(ref node) = self.0 {
             v.push(node.data.clone());
@@ -155,7 +210,30 @@ impl<T: Clone> BinaryTree<T> {
             node.right_node.preorder_traversal(v);
         }
     }
-    /// traverse the binary tree in inorder **recursively**
+    /// Traverse the binary tree in inorder **recursively**.
+    ///
+    /// This method performs an inorder traversal of the binary tree, visiting the left subtree first,
+    /// then the root node, and finally the right subtree. The data of each visited node is
+    /// pushed into the provided vector.
+    ///
+    /// # Arguments
+    ///
+    /// * `v` - A mutable reference to a vector where the data of the visited nodes will be stored.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use rs_algorithm_practise::data_structure::binary_tree::BinaryTree;
+    ///
+    /// let mut tree = BinaryTree::new();
+    /// tree.add_sort(10);
+    /// tree.add_sort(5);
+    /// tree.add_sort(15);
+    ///
+    /// let mut result = Vec::new();
+    /// tree.inorder_traversal(&mut result);
+    /// assert_eq!(result, vec![5, 10, 15]);
+    /// ```
     pub fn inorder_traversal(&self, v: &mut Vec<T>) {
         if let Some(ref node) = self.0 {
             node.left_node.inorder_traversal(v);
@@ -163,7 +241,30 @@ impl<T: Clone> BinaryTree<T> {
             node.right_node.inorder_traversal(v);
         }
     }
-    /// traverse the binary tree in postorder **recursively**
+    /// Traverse the binary tree in postorder **recursively**.
+    ///
+    /// This method performs a postorder traversal of the binary tree, visiting the left subtree first,
+    /// then the right subtree, and finally the root node. The data of each visited node is
+    /// pushed into the provided vector.
+    ///
+    /// # Arguments
+    ///
+    /// * `v` - A mutable reference to a vector where the data of the visited nodes will be stored.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use rs_algorithm_practise::data_structure::binary_tree::BinaryTree;
+    ///
+    /// let mut tree = BinaryTree::new();
+    /// tree.add_sort(10);
+    /// tree.add_sort(5);
+    /// tree.add_sort(15);
+    ///
+    /// let mut result = Vec::new();
+    /// tree.postorder_traversal(&mut result);
+    /// assert_eq!(result, vec![5, 15, 10]);
+    /// ```
     pub fn postorder_traversal(&self, v: &mut Vec<T>) {
         if let Some(ref node) = self.0 {
             node.left_node.postorder_traversal(v);
@@ -171,9 +272,53 @@ impl<T: Clone> BinaryTree<T> {
             v.push(node.data.clone());
         }
     }
-
+    /// Traverse the binary tree in breadth-first order.
+    ///
+    /// This method performs a breadth-first traversal of the binary tree, visiting each level
+    /// of the tree from top to bottom and left to right. The data of each visited node is
+    /// collected into a vector and returned.
+    ///
+    /// # Returns
+    ///
+    /// A `Vec<T>` containing the data of the visited nodes in breadth-first order.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use rs_algorithm_practise::data_structure::binary_tree::BinaryTree;
+    ///
+    /// let mut tree = BinaryTree::new();
+    /// tree.add_sort(10);
+    /// tree.add_sort(5);
+    /// tree.add_sort(15);
+    ///
+    /// let result = tree.breadth_first_traversal();
+    /// assert_eq!(result, vec![10, 5, 15]);
+    /// ```
     pub fn breadth_first_traversal(&self) -> Vec<T> {
-        vec![]
+        let mut res = Vec::new();
+        let mut queue = VecDeque::new();
+
+        if let Some(ref root_node) = self.0 {
+            queue.push_front(root_node);
+        }
+
+        loop {
+            if queue.is_empty() { break; }
+
+            let node = queue.pop_back().unwrap();
+            res.push(node.data.clone());
+
+            if let Some(ref left_node) = node.left_node.0 {
+                queue.push_front(left_node);
+            }
+
+            if let Some(ref right_node) = node.right_node.0 {
+                queue.push_front(right_node);
+            }
+        }
+
+        res
     }
 
     /// transit a binary tree to a vector of Option **recursively**:
@@ -224,13 +369,35 @@ impl<T: Clone> BinaryTree<T> {
 }
 
 impl<T: Ord> BinaryTree<T> {
+    /// Adds a new element to the binary tree while maintaining its balance.
+    ///
+    /// This method inserts a new element into the binary tree in a sorted manner.
+    /// It ensures that the tree remains balanced by performing rotations if necessary.
+    /// The balancing factor of each node is checked after insertion, and rotations
+    /// are performed to maintain the balance of the tree.
+    ///
+    /// # Arguments
+    ///
+    /// * `data` - The data to be added to the binary tree.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use rs_algorithm_practise::data_structure::binary_tree::BinaryTree;
+    ///
+    /// let mut tree = BinaryTree::new();
+    /// tree.add_sort(10);
+    /// tree.add_sort(5);
+    /// tree.add_sort(15);
+    ///
+    /// assert_eq!(tree.to_vec(), vec![Some(10), Some(5), Some(15)]);
+    /// ```
     pub fn add_sort(&mut self, data: T) {
         let balancing_factor = match self.0 {
             Some(ref mut bd) => {
                 if data < bd.data {
                     bd.left_node.add_sort(data);
                     bd.balancing_factor()
-
                 } else {
                     bd.right_node.add_sort(data);
                     bd.balancing_factor()
@@ -246,7 +413,7 @@ impl<T: Ord> BinaryTree<T> {
                 0
             }
         };
-        
+
         match balancing_factor {
             1.. => self.rotate_right(), // in the rotation, we have set height
             ..-1 => self.rotate_left(),
@@ -337,7 +504,6 @@ mod tests {
 
         binary_tree.rotate_left();
         println!("{}", binary_tree);
-
     }
 
     #[test]
@@ -345,8 +511,7 @@ mod tests {
         let mut bt = BinaryTree::new();
         for i in 0..20 {
             bt.add_sort(i);
-            println!("{}",bt);
+            println!("{}", bt);
         }
-
     }
 }
