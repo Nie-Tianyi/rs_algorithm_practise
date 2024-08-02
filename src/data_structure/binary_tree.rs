@@ -47,7 +47,7 @@ impl<T> TreeNode<T> {
     /// return the balacing factor of a node,
     /// that is the hight of the left node minus the height of right node
     #[inline]
-    pub fn balacing_factor(&self) -> isize {
+    pub fn balancing_factor(&self) -> isize {
         self.left_node.height() as isize - self.right_node.height() as isize
     }
 }
@@ -214,11 +214,11 @@ impl<T: Ord> BinaryTree<T> {
             Some(ref mut bd) => {
                 if data < bd.data {
                     bd.left_node.add_sort(data);
-                    bd.balacing_factor()
+                    bd.balancing_factor()
 
                 } else {
                     bd.right_node.add_sort(data);
-                    bd.balacing_factor()
+                    bd.balancing_factor()
                 }
             }
             None => {
