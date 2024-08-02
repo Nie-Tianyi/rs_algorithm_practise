@@ -276,13 +276,13 @@ mod tests {
         binary_tree.add_sort(12); // tree: 10 [None,12]
         assert_eq!(binary_tree.depth(), 2);
 
-        binary_tree.add_sort(11); // tree: 10 [None,12] [[None,None][11,None]]
+        binary_tree.add_sort(11); // tree: 11 [10,12]
+        assert_eq!(binary_tree.depth(), 2);
+
+        binary_tree.add_sort(13); // tree: 11 [10,12] [[None,None][None,13]]
         assert_eq!(binary_tree.depth(), 3);
 
-        binary_tree.add_sort(13); // tree: 10 [None,12] [[None,None][11,13]]
-        assert_eq!(binary_tree.depth(), 3);
-
-        binary_tree.add_sort(9); // tree: 10 [9,12] [[None,None][11,13]]
+        binary_tree.add_sort(9); // tree: 11 [10,12] [[9,None][None,13]]
         assert_eq!(binary_tree.depth(), 3);
     }
 
