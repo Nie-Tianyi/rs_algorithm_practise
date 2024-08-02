@@ -173,14 +173,11 @@ impl<T> DoublyLinkedList<T> {
     /// use rs_algorithm_practise::data_structure::doubly_linked_list::DoublyLinkedList;
     /// use rs_algorithm_practise::doubly_linked_list;
     ///
-    /// fn test_pop_back() {
-    ///     let mut dll = doubly_linked_list![1,2];
-    ///     assert_eq!(dll.pop_back(), Some(2));
-    ///     assert_eq!(dll.pop_back(), Some(1));
-    ///     assert_eq!(dll.pop_back(), None);
-    ///     assert_eq!(dll, doubly_linked_list![]);
-    /// }
-    ///
+    /// let mut dll = doubly_linked_list![1,2];
+    /// assert_eq!(dll.pop_back(), Some(2));
+    /// assert_eq!(dll.pop_back(), Some(1));
+    /// assert_eq!(dll.pop_back(), None);
+    /// assert_eq!(dll, doubly_linked_list![]);
     /// ```
     pub fn pop_back(&mut self) -> Option<T> {
         self.last.take().map(|last_node_weak| {
