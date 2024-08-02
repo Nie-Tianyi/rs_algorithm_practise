@@ -186,8 +186,11 @@ impl<T: Clone> BinaryTree<T> {
     /// binary_tree.add_sort(12); // tree: 10 [None,12]
     /// assert_eq!(vec![Some(10), None, Some(12)], binary_tree.to_vec());
     ///
-    /// binary_tree.add_sort(11); // tree: 10 [None,12] [[None,None][11,None]]
-    /// assert_eq!(vec![Some(10), None, Some(12), None, None, Some(11), None], binary_tree.to_vec());
+    /// binary_tree.add_sort(11); // 11 [10,12]
+    /// assert_eq!(
+    ///     vec![Some(11), Some(10), Some(12)],
+    ///     binary_tree.to_vec()
+    /// );
     /// ```
     pub fn to_vec(&self) -> Vec<Option<T>> {
         let mut arr = vec![None; 2_usize.pow(self.depth() as u32) - 1];
@@ -293,21 +296,21 @@ mod tests {
         binary_tree.add_sort(12); // tree: 10 [None,12]
         assert_eq!(vec![Some(10), None, Some(12)], binary_tree.to_vec());
 
-        binary_tree.add_sort(11); // tree: 10 [None,12] [[None,None][11,None]]
+        binary_tree.add_sort(11); // 11 [10,12]
         assert_eq!(
-            vec![Some(10), None, Some(12), None, None, Some(11), None],
+            vec![Some(11), Some(10), Some(12)],
             binary_tree.to_vec()
         );
 
-        binary_tree.add_sort(13); // tree: 10 [None,12] [[None,None][11,13]]
+        binary_tree.add_sort(13);
         assert_eq!(
-            vec![Some(10), None, Some(12), None, None, Some(11), Some(13)],
+            vec![Some(11), Some(10), Some(12), None, None, None, Some(13)],
             binary_tree.to_vec()
         );
 
-        binary_tree.add_sort(9); // tree: 10 [9,12] [[None,None][11,13]]
+        binary_tree.add_sort(9);
         assert_eq!(
-            vec![Some(10), Some(9), Some(12), None, None, Some(11), Some(13)],
+            vec![Some(11), Some(9), Some(12), None, Some(10), None, Some(13)],
             binary_tree.to_vec()
         );
     }
