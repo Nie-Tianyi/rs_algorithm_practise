@@ -2,7 +2,7 @@ use std::cmp::{max, Ordering};
 use std::collections::VecDeque;
 use std::fmt::Display;
 
-/// a Balanced Binary Tree
+/// a Self-Balancing Binary Search Tree
 pub struct BinaryTree<T>(Option<Box<TreeNode<T>>>);
 
 /// Tree node of the binary tree
