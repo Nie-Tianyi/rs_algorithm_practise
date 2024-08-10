@@ -258,7 +258,7 @@ impl<T: Display> Display for DoublyLinkedList<T> {
 
 
 /// Initializes a linked list and pushes elements into the list
-/// in reverse order.
+/// in **reverse order**.
 ///
 /// # Examples
 ///

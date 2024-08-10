@@ -117,13 +117,13 @@ impl<T: Display + Clone> Display for BinaryTree<T> {
 }
 
 impl<T> BinaryTree<T> {
-    /// intiate an empty binary tree
+    /// initiate an empty binary tree
     #[inline]
     pub fn new() -> Self {
         BinaryTree(None)
     }
     /// # Returns
-    /// a boolen value that whether a Tree is empty
+    /// a boolean value that whether a Tree is empty
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.0.is_none()
