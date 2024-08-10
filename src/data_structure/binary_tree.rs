@@ -416,8 +416,8 @@ impl<T: Ord> BinaryTree<T> {
 
         match balancing_factor {
             1.. => self.rotate_right(), // in the rotation, we have set height
-            ..-1 => self.rotate_left(),
-            -1..1 => self.set_height(),
+            ..-1 => self.rotate_left(), // right subtree is deeper, rotate left
+            -1..1 => self.set_height(), // no need for rotation
         }
     }
 }
@@ -510,6 +510,16 @@ mod tests {
     fn test_add_sort() {
         let mut bt = BinaryTree::new();
         for i in 0..20 {
+            bt.add_sort(i);
+            println!("{}", bt);
+        }
+    }
+
+    #[test]
+    fn test_add_sort_2() {
+        let mut bt = BinaryTree::new();
+        let v = vec![10, 5, 15, 4, 6, 7];
+        for i in v {
             bt.add_sort(i);
             println!("{}", bt);
         }
