@@ -102,7 +102,11 @@ A **Queue** is a fundamental data structure in computer science that follows the
 
 A **Binary Tree**, also been called Binary Search Tree, is a hierarchical data structure in which each node has at most two children, referred to as the left child and the right child. This structure is particularly useful for representing hierarchical relationships and is fundamental in various algorithms and applications. The time complexity of search a given element in a binary tree is $$O(\log_2n)$$ if the tree is balanced. The term "balanced" refers to a tree structure where the height difference between the left and right subtrees of any node is minimized.  In the worst case, consider insert node 1,2,3,4,... in sequence, the binary will degrade to a singly linked list, where the time complexity of searching degrades to $$O(n)$$.
 
-#### AVL Tree - A Self-Balancing Binary Search Tree
+#### 3.1 Heap - A Complete Binary Tree
+
+
+
+#### 3.2 AVL Tree - A Self-Balancing Binary Search Tree
 
 An AVL Tree is a self-balancing tree, it will balance itself at every insertion. After each insertion, it will check the height difference between the left and right subtree of each node, if the difference is larger than 1, it will rotate the tree to make it balanced. The time complexity of searching in an AVL tree is constantly at $$O(\log_2n)$$.
 
