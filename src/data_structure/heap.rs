@@ -4,7 +4,7 @@ pub struct Heap<T>{
 
 impl<T> Heap<T>{
     #[inline]
-    pub fn new() -> Self<T> {
+    pub fn new() -> Heap<T> {
         Self {
             data: Vec::new(),
         }
