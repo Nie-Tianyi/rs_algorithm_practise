@@ -10,3 +10,9 @@ impl<T> Heap<T>{
         }
     }
 }
+
+impl<T> Default for Heap<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
