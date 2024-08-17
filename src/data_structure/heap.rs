@@ -1,13 +1,11 @@
-pub struct Heap<T>{
+pub struct Heap<T> {
     data: Vec<T>,
 }
 
-impl<T> Heap<T>{
+impl<T> Heap<T> {
     #[inline]
     pub fn new() -> Heap<T> {
-        Self {
-            data: Vec::new(),
-        }
+        Self { data: Vec::new() }
     }
 }
 

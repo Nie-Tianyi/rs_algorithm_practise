@@ -36,8 +36,8 @@ impl<T> LinkedList<T> {
     #[inline]
     pub fn peak(&self) -> Option<&T> {
         match self.0 {
-            Some((ref value, _)) => { Some(value) }
-            None => { None }
+            Some((ref value, _)) => Some(value),
+            None => None,
         }
     }
 
@@ -54,9 +54,7 @@ impl<T> LinkedList<T> {
                 self.0 = child.0;
                 Some(data)
             }
-            None => {
-                None
-            }
+            None => None,
         }
     }
 

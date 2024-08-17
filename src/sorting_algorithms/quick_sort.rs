@@ -56,7 +56,7 @@ pub fn quick_sort<T: Ord>(array: &mut [T]) {
 ///
 /// `array: &mut [T]`: array to be sorted, a mutable slice. T must
 /// implements trait `Ord` and `Send`.
-/// 
+///
 /// `Send` is an auto trait, which means it will be implemented
 /// automatically if all of its member variables has implemented
 /// this trait

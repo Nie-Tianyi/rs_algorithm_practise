@@ -1,5 +1,5 @@
-use std::fmt::{Display, Formatter};
 use super::doubly_linked_list::DoublyLinkedList;
+use std::fmt::{Display, Formatter};
 
 /// `Queue` is a generic queue structure that utilizes a doubly linked list as its underlying data structure.
 /// It provides basic queue operations such as enqueue (to add an element to the end of the queue),
@@ -89,9 +89,9 @@ mod tests {
         q.enqueue(12);
         q.enqueue(13);
 
-        assert_eq!(q.dequeue(),Some(12));
-        assert_eq!(q.dequeue(),Some(13));
-        assert_eq!(q.dequeue(),None);
+        assert_eq!(q.dequeue(), Some(12));
+        assert_eq!(q.dequeue(), Some(13));
+        assert_eq!(q.dequeue(), None);
         assert!(q.is_empty());
     }
 }

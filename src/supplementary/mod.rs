@@ -1,2 +1,2 @@
-pub mod stepper;
 pub mod random;
+pub mod stepper;

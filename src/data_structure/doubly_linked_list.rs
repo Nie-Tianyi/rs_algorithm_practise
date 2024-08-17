@@ -1,4 +1,8 @@
-use std::{cell::RefCell, fmt::Display, rc::{Rc, Weak}};
+use std::{
+    cell::RefCell,
+    fmt::Display,
+    rc::{Rc, Weak},
+};
 
 /// a doubly linked list
 #[derive(Debug)]
@@ -45,25 +49,21 @@ impl<T> DoublyLinkedList<T> {
     pub fn push_front(&mut self, data: T) {
         match self.first.take() {
             Some(node) => {
-                let new_front = Rc::new(
-                    RefCell::new(ListNode {
-                        data,
-                        next: Some(node.clone()),
-                        prev: None,
-                    })
-                );
+                let new_front = Rc::new(RefCell::new(ListNode {
+                    data,
+                    next: Some(node.clone()),
+                    prev: None,
+                }));
                 let mut m = node.borrow_mut();
                 m.prev = Some(Rc::downgrade(&new_front));
                 self.first = Some(new_front);
             }
             None => {
-                let new_node = Rc::new(
-                    RefCell::new(ListNode {
-                        data,
-                        next: None,
-                        prev: None,
-                    })
-                );
+                let new_node = Rc::new(RefCell::new(ListNode {
+                    data,
+                    next: None,
+                    prev: None,
+                }));
                 self.last = Some(Rc::downgrade(&new_node));
                 self.first = Some(new_node);
             }
@@ -126,26 +126,22 @@ impl<T> DoublyLinkedList<T> {
     pub fn push_back(&mut self, data: T) {
         match self.last.take() {
             Some(node) => {
-                let new_back = Rc::new(
-                    RefCell::new(ListNode {
-                        data,
-                        next: None,
-                        prev: Some(node.clone()),
-                    })
-                );
+                let new_back = Rc::new(RefCell::new(ListNode {
+                    data,
+                    next: None,
+                    prev: Some(node.clone()),
+                }));
                 let st = Weak::upgrade(&node).unwrap();
                 let mut m = st.borrow_mut();
                 self.last = Some(Rc::downgrade(&new_back));
                 m.next = Some(new_back);
             }
             None => {
-                let new_node = Rc::new(
-                    RefCell::new(ListNode {
-                        data,
-                        next: None,
-                        prev: None,
-                    })
-                );
+                let new_node = Rc::new(RefCell::new(ListNode {
+                    data,
+                    next: None,
+                    prev: None,
+                }));
                 self.last = Some(Rc::downgrade(&new_node));
                 self.first = Some(new_node);
             }
@@ -181,16 +177,12 @@ impl<T> DoublyLinkedList<T> {
     /// ```
     pub fn pop_back(&mut self) -> Option<T> {
         self.last.take().map(|last_node_weak| {
-            let last_node_rc = last_node_weak
-                .upgrade()
-                .unwrap();
+            let last_node_rc = last_node_weak.upgrade().unwrap();
             let last_node = last_node_rc.borrow();
             let prev_node = last_node.prev.clone();
             match prev_node {
                 Some(prev_node_weak) => {
-                    let prev_node_rc = prev_node_weak
-                        .upgrade()
-                        .unwrap();
+                    let prev_node_rc = prev_node_weak.upgrade().unwrap();
                     let mut prev_node = prev_node_rc.borrow_mut();
                     prev_node.next = None;
                     self.last = Some(prev_node_weak);
@@ -218,10 +210,11 @@ impl<T: PartialEq> PartialEq for DoublyLinkedList<T> {
         // compare the elements in two lists one by one
         loop {
             match (a, b) {
-                (None, None) => return true, // both None, it is equal
+                (None, None) => return true,     // both None, it is equal
                 (None, Some(_)) => return false, // one None one Some, not equal
                 (Some(_), None) => return false,
-                (Some(a_rc), Some(b_rc)) => { // both Some, compare the value inside Option
+                (Some(a_rc), Some(b_rc)) => {
+                    // both Some, compare the value inside Option
                     let a_ref = a_rc.borrow();
                     let b_ref = b_rc.borrow();
 
@@ -255,7 +248,6 @@ impl<T: Display> Display for DoublyLinkedList<T> {
         write!(f, " None)")
     }
 }
-
 
 /// Initializes a linked list and pushes elements into the list
 /// in **reverse order**.
@@ -293,9 +285,9 @@ mod tests {
         let empty_list: DoublyLinkedList<i32> = doubly_linked_list![];
         let empty_list_2: DoublyLinkedList<i32> = doubly_linked_list![];
         assert_eq!(empty_list, empty_list_2);
-        assert_eq!(doubly_linked_list![1,2], doubly_linked_list![1,2]);
+        assert_eq!(doubly_linked_list![1, 2], doubly_linked_list![1, 2]);
         assert_ne!(doubly_linked_list![], doubly_linked_list![1]);
-        assert_ne!(doubly_linked_list![1,2], doubly_linked_list![1]);
+        assert_ne!(doubly_linked_list![1, 2], doubly_linked_list![1]);
     }
 
     #[test]
@@ -308,12 +300,12 @@ mod tests {
         dll.push_back(5);
         dll.push_back(6);
 
-        assert_eq!(doubly_linked_list![3,2,1,4,5,6], dll)
+        assert_eq!(doubly_linked_list![3, 2, 1, 4, 5, 6], dll)
     }
 
     #[test]
     fn test_pop() {
-        let mut dll: DoublyLinkedList<i32> = doubly_linked_list![1,2,3,4];
+        let mut dll: DoublyLinkedList<i32> = doubly_linked_list![1, 2, 3, 4];
         let a = dll.pop_front();
         assert_eq!(a, Some(1));
         let b = dll.pop_back();
@@ -322,7 +314,7 @@ mod tests {
 
     #[test]
     fn test_pop_back() {
-        let mut dll = doubly_linked_list![1,2,3,4];
+        let mut dll = doubly_linked_list![1, 2, 3, 4];
         assert_eq!(dll.pop_back(), Some(4));
         assert_eq!(dll.pop_back(), Some(3));
         assert_eq!(dll.pop_back(), Some(2));

@@ -4,7 +4,7 @@
 ///
 /// # Arguments:
 /// `mut array: Vec<T>` where T must implement trait `Ord`
-/// 
+///
 /// # Returns:
 /// `Vec<T>` this function returns a sorted array
 pub fn merge_sort<T>(mut array: Vec<T>) -> Vec<T>

@@ -72,15 +72,9 @@ impl<T> TreeNode<T> {
         let right_height = self.right_node.height();
 
         match left_height.cmp(&right_height) {
-            Ordering::Less => {
-                -((right_height - left_height) as isize)
-            }
-            Ordering::Equal => {
-                0_isize
-            }
-            Ordering::Greater => {
-                (left_height - right_height) as isize
-            }
+            Ordering::Less => -((right_height - left_height) as isize),
+            Ordering::Equal => 0_isize,
+            Ordering::Greater => (left_height - right_height) as isize,
         }
     }
 }
@@ -131,16 +125,12 @@ impl<T> BinaryTree<T> {
     /// rotate the root node of the binary tree one node left
     #[inline]
     pub fn rotate_left(&mut self) {
-        self.0 = self.0.take().map(
-            |node| node.rotate_left()
-        )
+        self.0 = self.0.take().map(|node| node.rotate_left())
     }
     /// rotate the root node of the binary tree one node right
     #[inline]
     pub fn rotate_right(&mut self) {
-        self.0 = self.0.take().map(
-            |node| node.rotate_right()
-        )
+        self.0 = self.0.take().map(|node| node.rotate_right())
     }
 
     /// calculate the depth of the tree **recursively**.
@@ -304,7 +294,9 @@ impl<T: Clone> BinaryTree<T> {
         }
 
         loop {
-            if queue.is_empty() { break; }
+            if queue.is_empty() {
+                break;
+            }
 
             let node = queue.pop_back().unwrap();
             res.push(node.data.clone());
@@ -476,10 +468,7 @@ mod tests {
         assert_eq!(vec![Some(10), None, Some(12)], binary_tree.to_vec());
 
         binary_tree.add_sort(11); // 11 [10,12]
-        assert_eq!(
-            vec![Some(11), Some(10), Some(12)],
-            binary_tree.to_vec()
-        );
+        assert_eq!(vec![Some(11), Some(10), Some(12)], binary_tree.to_vec());
 
         binary_tree.add_sort(13);
         assert_eq!(

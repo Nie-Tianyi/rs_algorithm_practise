@@ -1,6 +1,6 @@
+use rand::random;
 use std::cell::RefCell;
 use std::rc::Rc;
-use rand::random;
 
 type Rcc<T> = Rc<RefCell<T>>;
 
@@ -78,6 +78,6 @@ mod tests {
             title, body
         );
 
-        println!("{}",html)
+        println!("{}", html)
     }
 }
