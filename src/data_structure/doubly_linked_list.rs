@@ -5,7 +5,7 @@ use std::{
 };
 
 /// a doubly linked list
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct DoublyLinkedList<T> {
     first: Option<Rc<RefCell<ListNode<T>>>>,
     last: Option<Weak<RefCell<ListNode<T>>>>,
@@ -227,12 +227,6 @@ impl<T: PartialEq> PartialEq for DoublyLinkedList<T> {
                 }
             }
         }
-    }
-}
-
-impl<T> Default for DoublyLinkedList<T> {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
