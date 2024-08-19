@@ -416,7 +416,6 @@ impl<T: Ord> BinaryTree<T> {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

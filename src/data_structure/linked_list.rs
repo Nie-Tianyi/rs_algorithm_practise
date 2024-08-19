@@ -1,7 +1,6 @@
 use core::panic;
 use std::fmt::Display;
 
-
 /// a single linked list, T must implement `Display` trait.
 /// this linked list will be displayed as ` a -> b -> c -> ... -> None`
 #[derive(Default, Debug, Clone, PartialEq)]
