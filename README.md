@@ -104,7 +104,7 @@ A **Binary Tree**, also been called Binary Search Tree, is a hierarchical data s
 
 #### 3.1 Heap - A Complete Binary Tree
 
-What is a Heap ? Heap is complete binary tree. A complete binary tree is a special type of binary tree where all the levels of the tree are filled completely except the lowest level nodes which are filled from as left as possible. How we represent a Heap? we use a `Vec`represent  a Heap. for each node, it parent node's index in the `Vec` is ![img](https://cdn.nlark.com/yuque/__latex/1115c485d025d1a97b702a8ee180051a.svg),its left child node's index is 2n+1,right child node index is 2n+n.
+What is a Heap ? Heap is complete binary tree. A complete binary tree is a special type of binary tree where all the levels of the tree are filled completely except the lowest level nodes which are filled from as left as possible. How we represent a Heap? we use a `Vec`represent  a Heap. for each node, it parent node's index in the `Vec` is $\lfloor\frac{n-1}{2}\rfloor$,its left child node's index is $2n+1$,right child node index is $2n+2$.
 
 Heap can be classified into 2 class, Min Heap and Max Heap. In the Max Heap, every parent node's value is larger than its child nodes' value. In the Min Heap, every parent node's value is smaller than its child node's value. Min Heap is also called priority queue.
 
