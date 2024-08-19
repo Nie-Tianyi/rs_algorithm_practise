@@ -1,7 +1,7 @@
 use core::panic;
 use std::fmt::Display;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 /// a single linked list, T must implement `Display` trait.
 /// this linked list will be displayed as ` a -> b -> c -> ... -> None`
 pub struct LinkedList<T>(Option<(T, Box<LinkedList<T>>)>);
@@ -71,7 +71,7 @@ impl<T> LinkedList<T> {
         }
     }
 
-    /// insert a element at a given index
+    /// insert an element at a given index
     ///
     /// # Arguments
     /// `element: T`: the element to be inserted.
@@ -111,12 +111,6 @@ impl<T> LinkedList<T> {
         let (self_value, child) = self.0.take().unwrap();
 
         self.0 = Some((self_value, Box::new(LinkedList(Some((data, child))))));
-    }
-}
-
-impl<T> Default for LinkedList<T> {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
