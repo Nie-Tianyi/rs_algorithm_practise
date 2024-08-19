@@ -1,4 +1,4 @@
-#[derive(Default, Clone)]
+#[derive(Default, Debug, Clone, PartialEq)]
 pub struct MaxHeap<T> {
     data: Vec<T>,
 }
@@ -28,7 +28,7 @@ impl<T: Ord> MaxHeap<T> {
 // alias for MinHeap
 pub type PriorityQueue<T> = MinHeap<T>;
 
-#[derive(Clone, Default)]
+#[derive(Default, Debug, Clone, PartialEq)]
 pub struct MinHeap<T> {
     data: Vec<T>,
 }

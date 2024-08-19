@@ -1,9 +1,10 @@
 use core::panic;
 use std::fmt::Display;
 
-#[derive(Debug, Clone, Default)]
+
 /// a single linked list, T must implement `Display` trait.
 /// this linked list will be displayed as ` a -> b -> c -> ... -> None`
+#[derive(Default, Debug, Clone, PartialEq)]
 pub struct LinkedList<T>(Option<(T, Box<LinkedList<T>>)>);
 
 impl<T> LinkedList<T> {

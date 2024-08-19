@@ -8,7 +8,7 @@ type Rcc<T> = Rc<RefCell<T>>;
 pub fn rcc<T>(t: T) -> Rcc<T> {
     Rc::new(RefCell::new(t))
 }
-
+#[derive(Default, Debug, Clone, PartialEq)]
 pub struct SkipNode<T: PartialOrd> {
     right: Option<Rcc<SkipNode<T>>>,
     down: Option<Rcc<SkipNode<T>>>,

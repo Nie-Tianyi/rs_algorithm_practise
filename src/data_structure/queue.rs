@@ -21,7 +21,7 @@ use std::fmt::{Display, Formatter};
 /// assert_eq!(queue.dequeue(), Some(2));
 /// assert!(queue.is_empty());
 /// ```
-#[derive(Debug)]
+#[derive(Default, Debug, Clone, PartialEq)]
 pub struct Queue<T> {
     data: DoublyLinkedList<T>,
 }
@@ -70,12 +70,6 @@ impl<T> Queue<T> {
     #[inline]
     pub fn dequeue(&mut self) -> Option<T> {
         self.data.pop_front()
-    }
-}
-
-impl<T> Default for Queue<T> {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

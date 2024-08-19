@@ -3,9 +3,11 @@ use std::collections::VecDeque;
 use std::fmt::Display;
 
 /// a Self-Balancing Binary Search Tree
+#[derive(Default, Debug, Clone, PartialEq)]
 pub struct BinaryTree<T>(Option<Box<TreeNode<T>>>);
 
 /// Tree node of the binary tree
+#[derive(Default, Debug, Clone, PartialEq)]
 pub struct TreeNode<T> {
     data: T,
     height: usize, // for balancing the tree
@@ -414,11 +416,6 @@ impl<T: Ord> BinaryTree<T> {
     }
 }
 
-impl<T> Default for BinaryTree<T> {
-    fn default() -> Self {
-        Self::new()
-    }
-}
 
 #[cfg(test)]
 mod tests {

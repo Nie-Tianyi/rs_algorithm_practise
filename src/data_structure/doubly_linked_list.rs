@@ -5,13 +5,13 @@ use std::{
 };
 
 /// a doubly linked list
-#[derive(Debug, Default)]
+#[derive(Default, Debug, Clone)]
 pub struct DoublyLinkedList<T> {
     first: Option<Rc<RefCell<ListNode<T>>>>,
     last: Option<Weak<RefCell<ListNode<T>>>>,
 }
 /// list node of doubly linked list
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct ListNode<T> {
     data: T,
     next: Option<Rc<RefCell<ListNode<T>>>>,
