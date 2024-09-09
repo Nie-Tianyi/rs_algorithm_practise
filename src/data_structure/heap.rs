@@ -106,6 +106,6 @@ mod tests {
         pq.push(3);
         pq.push(2);
         pq.push(1);
-        println!("{:?}", pq);
+        assert_eq!(vec![1, 3, 2], pq.into_inner());
     }
 }
