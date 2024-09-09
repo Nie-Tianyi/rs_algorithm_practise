@@ -102,10 +102,10 @@ mod tests {
 
     #[test]
     fn test_push() {
-        let mut pq = MaxHeap::<i32>::new();
-        pq.push(1);
-        pq.push(2);
+        let mut pq = PriorityQueue::<i32>::new();
         pq.push(3);
+        pq.push(2);
+        pq.push(1);
         println!("{:?}", pq);
     }
 }
