@@ -69,10 +69,10 @@ impl<T: PartialOrd, Marker> Heap<T, Marker> {
     }
     #[inline]
     pub fn has_leftchild(&self, index: usize) -> bool {
-        2 * index < self.len() // same as `2 * index + 1 <= self.len()`
+        2 * index + 2 <= self.len() // same as `2 * index + 1 <= self.len() - 1`
     }
     pub fn has_rightchild(&self, index: usize) -> bool {
-        2 * index + 2 <= self.len()
+        2 * index + 3 <= self.len() // same as `2 * index + 2 <= self.len() - 1`
     }
     #[inline]
     pub fn shift_upwards(&mut self, index: usize) {
@@ -106,7 +106,7 @@ impl<T: PartialOrd> PriorityQueue<T> {
             data: Vec::new(),
         }
     }
-    // place the data at back of the tree, then shift it upwards till its right position
+    // Place the data at back of the tree, then shift it upwards till its right position
     pub fn push(&mut self, data: T) {
         self.data.push(data);
         let mut index = self.len() - 1;
@@ -116,6 +116,53 @@ impl<T: PartialOrd> PriorityQueue<T> {
             self.shift_upwards(index);
             index = Self::parent_index(index);
         }
+    }
+    // Swap the root node and the last node, pop it.
+    // Then shift new root downwards till its right place
+    pub fn pop(&mut self) -> Option<T> {
+        if self.is_empty() {
+            return None;
+        }
+        let last_node = self.len() - 1;
+        self.data.swap(0, last_node);
+        let res = self.data.pop();
+
+        let mut index = 0;
+        while self.has_leftchild(index) || self.has_rightchild(index)
+        {   
+            let val = self.get_node(index)?;
+            match (self.get_leftchild(index),self.get_rightchild(index)) {
+                (Some(left_val),None) => {
+                    if val <= left_val {
+                        break;
+                    }
+                    self.shift_leftchild(index);
+                    index = Self::leftchild_index(index);
+                },
+                (None, Some(right_val)) => {
+                    // this branch should never be executed as well
+                    if val <= right_val {
+                        break;
+                    }
+                    self.shift_rightchild(index);
+                    index = Self::rightchild_index(index);
+                },
+                (Some(left_val),Some(right_val)) => {
+                    if val <= left_val && val <= right_val {
+                        break;
+                    } else if left_val <= right_val { 
+                        self.shift_leftchild(index);
+                        index = Self::leftchild_index(index);
+                    } else { 
+                        self.shift_rightchild(index);
+                        index = Self::rightchild_index(index);
+                    }
+                },
+                (None,None) => unreachable!("[PriorityQueue::Pop()] This branch should never be executed!"),
+            }
+        }
+
+        res
     }
 }
 
@@ -129,11 +176,15 @@ mod tests {
     }
 
     #[test]
-    fn test_push() {
+    fn test_push_and_pop() {
         let mut pq = PriorityQueue::<i32>::new();
         pq.push(3);
         pq.push(2);
         pq.push(1);
-        assert_eq!(vec![1, 3, 2], pq.into_inner());
+        assert_eq!(vec![1, 3, 2], pq.clone().into_inner());
+        assert_eq!(Some(1), pq.pop());
+        assert_eq!(Some(2), pq.pop());
+        assert_eq!(Some(3), pq.pop());
+        assert_eq!(None, pq.pop());
     }
 }
