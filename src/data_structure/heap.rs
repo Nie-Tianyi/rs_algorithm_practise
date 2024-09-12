@@ -29,6 +29,63 @@ impl<T: PartialOrd, Marker> Heap<T, Marker> {
     pub fn into_inner(self) -> Vec<T> {
         self.data
     }
+    #[inline]
+    pub fn parent_index(index: usize) -> usize {
+        if index == 0 {
+            return 0;
+        }
+        (index - 1) / 2
+    }
+    #[inline]
+    pub fn leftchild_index(index: usize) -> usize {
+        2 * index + 1
+    }
+    #[inline]
+    pub fn rightchild_index(index: usize) -> usize {
+        2 * index + 2
+    }
+    #[inline]
+    pub fn get_parent(&self, index: usize) -> Option<&T> {
+        if index == 0 {
+            return None;
+        }
+        self.data.get((index - 1) / 2)
+    }
+    #[inline]
+    pub fn get_leftchild(&self, index: usize) -> Option<&T> {
+        self.data.get(2 * index + 1)
+    }
+    #[inline]
+    pub fn get_rightchild(&self, index: usize) -> Option<&T> {
+        self.data.get(2 * index + 2)
+    }
+    #[inline]
+    pub fn get_node(&self, index: usize) -> Option<&T> {
+        self.data.get(index)
+    }
+    #[inline]
+    pub fn has_parent(&self, index: usize) -> bool {
+        index != 0
+    }
+    #[inline]
+    pub fn has_leftchild(&self, index: usize) -> bool {
+        2 * index < self.len() // same as `2 * index + 1 <= self.len()`
+    }
+    pub fn has_rightchild(&self, index: usize) -> bool {
+        2 * index + 2 <= self.len()
+    }
+    #[inline]
+    pub fn shift_upwards(&mut self, index: usize) {
+        self.data.swap(index, (index - 1) / 2);
+    }
+    #[inline]
+    pub fn shift_leftchild(&mut self, index: usize) {
+        self.data.swap(index, 2 * index + 1);
+    }
+    #[inline]
+    pub fn shift_rightchild(&mut self, index: usize) {
+        self.data.swap(index, 2 * index + 2);
+    }
 }
 
 impl<T: PartialOrd> MaxHeap<T> {
@@ -40,7 +97,7 @@ impl<T: PartialOrd> MaxHeap<T> {
         }
     }
 }
-
+// A minimum heap that every node on the top is smaller than its children
 impl<T: PartialOrd> PriorityQueue<T> {
     #[inline]
     pub fn new() -> PriorityQueue<T> {
@@ -49,39 +106,17 @@ impl<T: PartialOrd> PriorityQueue<T> {
             data: Vec::new(),
         }
     }
-
+    // place the data at back of the tree, then shift it upwards till its right position
     pub fn push(&mut self, data: T) {
         self.data.push(data);
-        let mut i = self.data.len() - 1;
-        if i == 0 {
-            return;
-        }
-        let mut p = parent_index(i);
-        while self.data.get(p).unwrap() > self.data.get(i).unwrap() {
-            self.data.swap(p, i);
-            i = p;
-            if i == 0 {
-                return;
-            }
-            p = parent_index(i);
+        let mut index = self.len() - 1;
+        while self.has_parent(index)
+            && self.get_parent(index).unwrap() > self.get_node(index).unwrap()
+        {
+            self.shift_upwards(index);
+            index = Self::parent_index(index);
         }
     }
-}
-
-// get the parent node index, panics if n = 0
-#[inline]
-fn parent_index(n: usize) -> usize {
-    (n - 1) / 2
-}
-// get the left child node index
-#[inline]
-fn lc_index(n: usize) -> usize {
-    2 * n + 1
-}
-// get the right child node index
-#[inline]
-fn rc_index(n: usize) -> usize {
-    2 * n + 2
 }
 
 #[cfg(test)]
@@ -91,13 +126,6 @@ mod tests {
     fn test_new() {
         let pq = PriorityQueue::<i32>::new();
         println!("{}", pq.len());
-    }
-
-    #[test]
-    fn test_parent_index() {
-        for i in 1..=100 {
-            println!("{}", parent_index(i));
-        }
     }
 
     #[test]
