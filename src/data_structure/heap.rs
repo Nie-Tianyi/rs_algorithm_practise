@@ -128,17 +128,16 @@ impl<T: PartialOrd> PriorityQueue<T> {
         let res = self.data.pop();
 
         let mut index = 0;
-        while self.has_leftchild(index) || self.has_rightchild(index)
-        {   
+        while self.has_leftchild(index) || self.has_rightchild(index) {
             let val = self.get_node(index)?;
-            match (self.get_leftchild(index),self.get_rightchild(index)) {
-                (Some(left_val),None) => {
+            match (self.get_leftchild(index), self.get_rightchild(index)) {
+                (Some(left_val), None) => {
                     if val <= left_val {
                         break;
                     }
                     self.shift_leftchild(index);
                     index = Self::leftchild_index(index);
-                },
+                }
                 (None, Some(right_val)) => {
                     // this branch should never be executed as well
                     if val <= right_val {
@@ -146,25 +145,39 @@ impl<T: PartialOrd> PriorityQueue<T> {
                     }
                     self.shift_rightchild(index);
                     index = Self::rightchild_index(index);
-                },
-                (Some(left_val),Some(right_val)) => {
+                }
+                (Some(left_val), Some(right_val)) => {
                     if val <= left_val && val <= right_val {
                         break;
-                    } else if left_val <= right_val { 
+                    } else if left_val <= right_val {
                         self.shift_leftchild(index);
                         index = Self::leftchild_index(index);
-                    } else { 
+                    } else {
                         self.shift_rightchild(index);
                         index = Self::rightchild_index(index);
                     }
-                },
-                (None,None) => unreachable!("[PriorityQueue::Pop()] This branch should never be executed!"),
+                }
+                (None, None) => {
+                    unreachable!("[PriorityQueue::Pop()] This branch should never be executed!")
+                }
             }
         }
 
         res
     }
 }
+
+// pub fn heap_sort<T: Ord>(v: &[T]) -> &[T] {
+//     let mut pq = PriorityQueue::new();
+//     for i in v.into_iter() {
+//         pq.push(*i);
+//     }
+//     let mut res = Vec::new();
+//     while let Some(val) = pq.pop() {
+//         res.push(val)
+//     }
+//     res.as_slice()
+// }
 
 #[cfg(test)]
 mod tests {
