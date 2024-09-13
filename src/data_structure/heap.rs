@@ -167,17 +167,16 @@ impl<T: PartialOrd> PriorityQueue<T> {
     }
 }
 
-// pub fn heap_sort<T: Ord>(v: &[T]) -> &[T] {
-//     let mut pq = PriorityQueue::new();
-//     for i in v.into_iter() {
-//         pq.push(*i);
-//     }
-//     let mut res = Vec::new();
-//     while let Some(val) = pq.pop() {
-//         res.push(val)
-//     }
-//     res.as_slice()
-// }
+pub fn heap_sort<T: Ord>(v: &mut Vec<T>) {
+    let mut pq = PriorityQueue::new();
+    while let Some(val) = v.pop() {
+        pq.push(val);
+    }
+
+    while let Some(val) = pq.pop() {
+        v.push(val)
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -199,5 +198,12 @@ mod tests {
         assert_eq!(Some(2), pq.pop());
         assert_eq!(Some(3), pq.pop());
         assert_eq!(None, pq.pop());
+    }
+
+    #[test]
+    fn test_heap_sort() {
+        let mut v = vec![0, 12, 34, 34, 23, 1];
+        heap_sort(&mut v);
+        assert_eq!(vec![0,1,12,23,34,34], v);
     }
 }
