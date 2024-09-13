@@ -204,6 +204,6 @@ mod tests {
     fn test_heap_sort() {
         let mut v = vec![0, 12, 34, 34, 23, 1];
         heap_sort(&mut v);
-        assert_eq!(vec![0,1,12,23,34,34], v);
+        assert_eq!(vec![0, 1, 12, 23, 34, 34], v);
     }
 }
