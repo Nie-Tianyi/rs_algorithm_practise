@@ -117,7 +117,7 @@ impl<T: PartialOrd> PriorityQueue<T> {
             index = Self::parent_index(index);
         }
     }
-    // Swap the root node and the last node, pop it.
+    // Swap the root node with the last node, pop it.
     // Then shift new root downwards till its right place
     pub fn pop(&mut self) -> Option<T> {
         if self.is_empty() {
