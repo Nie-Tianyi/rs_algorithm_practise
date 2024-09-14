@@ -71,6 +71,7 @@ impl<T: PartialOrd, Marker> Heap<T, Marker> {
     pub fn has_leftchild(&self, index: usize) -> bool {
         2 * index + 2 <= self.len() // same as `2 * index + 1 <= self.len() - 1`
     }
+    #[inline]
     pub fn has_rightchild(&self, index: usize) -> bool {
         2 * index + 3 <= self.len() // same as `2 * index + 2 <= self.len() - 1`
     }
