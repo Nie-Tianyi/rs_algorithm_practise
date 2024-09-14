@@ -64,20 +64,6 @@ mod tests {
 
     #[test]
     fn test() {
-        let title = "Hello, World!";
-        let body = "This is a sample HTML content.";
-        let html = format!(
-            r#"<html>
-            <head>
-                <title>"{}"</title>
-            </head>
-            <body>
-                <p>{}</p>
-            </body>
-        </html>"#,
-            title, body
-        );
-
-        println!("{}", html)
+        assert_eq!(1 + 1, 2);
     }
 }
