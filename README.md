@@ -11,14 +11,14 @@ the pseudocode of this sorting algorithm can be expressed as:
 ```pseudocode
 for i in range from 0 to array_length:
 	for j in range from 0 to array_length - i -1:
-		swap array[j] with array[j+1] if array[j] > array[j+1] 
+		swap array[j] with array[j+1] if array[j] > array[j+1]
 ```
 
 A better version of this algorithm is added a flag in the first iteration. If the array is already sorted, then return it directly.
 
 ### 2. Selection Sort
 
-Selection Sort is another simple sorting algorithm. it selects the smallest element in the rest of the array and place it  ahead. its pseudocode can be expresses as:
+Selection Sort is another simple sorting algorithm. it selects the smallest element in the rest of the array and place it ahead. its pseudocode can be expresses as:
 
 ```pseudocode
 for i in range from 0 to array_length -1:
@@ -30,7 +30,7 @@ The time complexity is also $O(n^2)$, because finding the smallest element in an
 
 ### 3. Insertion Sort
 
-Insertion Sort is a simple sorting algorithm as well. It picks one element at a time and inserts the element into the place where it should be.  The pseudocode can be written as:
+Insertion Sort is a simple sorting algorithm as well. It picks one element at a time and inserts the element into the place where it should be. The pseudocode can be written as:
 
 ```pseudocode
 for i in the range from 1 to array_length:
@@ -86,7 +86,7 @@ In the average cases, the time complexity of this algorithm is $O(n\log_2 n)$ an
 
 A **linked list** is a linear data structure that consists of a series of nodes connected by pointers. Each node contains **data** and a **reference** to the next node in the list. Unlike arrays, linked lists allow for **efficient insertion or removal** of elements from any position in the list, as the nodes are not stored contiguously in memory.
 
-There three types of linked list: singly linked list, doubly linked list, and circular linked list. singly linked list is the simplest one, it only contains a reference to the next node. doubly linked list contains two references, one to the next node, and one to the previous node. circular linked list is a linked list where the last node points to the first node. The time complexity for adding or deleting a node in a linked list is **$O(1)$** ,   the time complexity for insertion is $O(n)$.
+There three types of linked list: singly linked list, doubly linked list, and circular linked list. singly linked list is the simplest one, it only contains a reference to the next node. doubly linked list contains two references, one to the next node, and one to the previous node. circular linked list is a linked list where the last node points to the first node. The time complexity for adding or deleting a node in a linked list is **$O(1)$** , the time complexity for insertion is $O(n)$.
 
 In the rust implementation, to avoid the recursive reference, we use the `Rc<T>` to wrap the reference to the next node, and `Weak<T>` to wrap the reference to the previous node.
 
@@ -100,11 +100,11 @@ A **Queue** is a fundamental data structure in computer science that follows the
 
 <img src="assets/images/binary-tree.png" alt="binary tree" />
 
-A **Binary Tree**, also been called Binary Search Tree, is a hierarchical data structure in which each node has at most two children, referred to as the left child and the right child. This structure is particularly useful for representing hierarchical relationships and is fundamental in various algorithms and applications. The time complexity of search a given element in a binary tree is $$O(\log_2n)$$ if the tree is balanced. The term "balanced" refers to a tree structure where the height difference between the left and right subtrees of any node is minimized.  In the worst case, consider insert node 1,2,3,4,... in sequence, the binary will degrade to a singly linked list, where the time complexity of searching degrades to $$O(n)$$.
+A **Binary Tree**, also been called Binary Search Tree, is a hierarchical data structure in which each node has at most two children, referred to as the left child and the right child. This structure is particularly useful for representing hierarchical relationships and is fundamental in various algorithms and applications. The time complexity of search a given element in a binary tree is $$O(\log_2n)$$ if the tree is balanced. The term "balanced" refers to a tree structure where the height difference between the left and right subtrees of any node is minimized. In the worst case, consider insert node 1,2,3,4,... in sequence, the binary will degrade to a singly linked list, where the time complexity of searching degrades to $$O(n)$$.
 
 #### 3.1 Heap - A Complete Binary Tree
 
-What is a Heap ? Heap is complete binary tree. A complete binary tree is a special type of binary tree where all the levels of the tree are filled completely except the lowest level nodes which are filled from as left as possible. How we represent a Heap? we use a `Vec`represent  a Heap. for each node, it parent node's index in the `Vec` is $\lfloor\frac{n-1}{2}\rfloor$,its left child node's index is $2n+1$,right child node index is $2n+2$.
+What is a Heap ? Heap is complete binary tree. A complete binary tree is a special type of binary tree where all the levels of the tree are filled completely except the lowest level nodes which are filled from as left as possible. How we represent a Heap? we use a `Vec`represent a Heap. for each node, it parent node's index in the `Vec` is $\lfloor\frac{n-1}{2}\rfloor$,its left child node's index is $2n+1$,right child node index is $2n+2$.
 
 Heap can be classified into 2 class, Min Heap and Max Heap. In the Max Heap, every parent node's value is larger than its child nodes' value. In the Min Heap, every parent node's value is smaller than its child node's value. Min Heap is also called priority queue.
 
@@ -114,7 +114,7 @@ An AVL Tree is a self-balancing tree, it will balance itself at every insertion.
 
 <img src="assets/images/rotation.png" alt="rotation" style="zoom:50%;" />
 
-***Pseudocode for Rotations***
+**_Pseudocode for Rotations_**
 
 - Right Rotation
 
@@ -162,7 +162,7 @@ impl Iterator for Stepper {
         }
         let res = self.current;
         self.current += self.step;
-        Some(res) 
+        Some(res)
     }
 }
 ```
@@ -171,7 +171,7 @@ impl Iterator for Stepper {
 
 Generating a pseudo random number involves take modulo on large integer. To generate a large integer, we can define few steps to calculate a random integer:
 
-``` rust
+```rust
 pub struct RandomGen {
     cur: usize,
     mul: usize,
@@ -197,3 +197,40 @@ impl RandomGen {
 ```
 
 Here, the `mul`,`inc`,`modulo` are just random numbers. In case of overflow, we can use external crate to define these integers to be large numbers (e.g. array of i32 that implements basic math operations).
+
+### 3. Hash Algorithm
+
+Building a hash method for a struct in Rust usually involves using trait `Hash` and `Hasher` in the standard library. The `Hasher` defines the steps to compute a hash value, any struct that implements `Hasher` trait can be used as a hash algorithm. We normally do not need to implement this trait ourselves, we can use `std::collections::hash_map::DefaultHasher` directly. Here is an example of implementing a `Hasher` trait:
+
+```rust
+pub struct MHash {
+    prev: u8,
+    n: u128,
+}
+
+impl Hasher for MHash {
+    fn write(&mut self, bytes: &[u8]) {
+        for byte in bytes {
+            self.n = (self.n + 11) * (*byte as u128 + 13)
+                + ((byte ^ self.prev) as u128) % (u64::MAX as u128);
+            self.prev = *byte;
+        }
+    }
+
+    fn finish(&self) -> u64 {
+        self.n as u64
+    }
+}
+```
+
+The `fn write(&mut self, bytes: &[u8])` method defines steps to update an internal value, and `fn finish(&self) -> u64` return the ultimate result.
+
+The default hash method and hasher return a `u64` value. This is because that the build-in hash traits are normally target at finding buckets for data structures like HashMap and not for any cryptography usage. It is a trade off between efficiency and security. If you need higher securities, consider using a third party cryptographic crate which may provide common cryptographic hash algorithms like SHA256 or SHA512.
+
+`Hash` trait defines an method that convert a type to a hash value. Any struct that implements this trait can be used as the key of a HashMap / HashSet. Here is definition of `Hash` trait:
+
+```rust
+pub trait Hash {
+    fn hash<H: Hasher>(&self, state: &mut H);
+}
+```
