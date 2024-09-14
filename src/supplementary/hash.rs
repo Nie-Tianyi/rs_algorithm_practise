@@ -6,16 +6,16 @@ pub struct MHash {
 }
 
 impl Hasher for MHash {
+    fn finish(&self) -> u64 {
+        self.n as u64
+    }
+
     fn write(&mut self, bytes: &[u8]) {
         for byte in bytes {
             self.n = (self.n + 11) * (*byte as u128 + 13)
                 + ((byte ^ self.prev) as u128) % (u64::MAX as u128);
             self.prev = *byte;
         }
-    }
-
-    fn finish(&self) -> u64 {
-        self.n as u64
     }
 }
 
