@@ -82,7 +82,7 @@ In the average cases, the time complexity of this algorithm is $O(n\log_2 n)$ an
 
 ### 1. Linked List
 
-<img src="assets/images/linked-list.webp" alt="Linked List" />
+![Linked List](assets/images/linked-list.webp)
 
 A **linked list** is a linear data structure that consists of a series of nodes connected by pointers. Each node contains **data** and a **reference** to the next node in the list. Unlike arrays, linked lists allow for **efficient insertion or removal** of elements from any position in the list, as the nodes are not stored contiguously in memory.
 
@@ -92,13 +92,13 @@ In the rust implementation, to avoid the recursive reference, we use the `Rc<T>`
 
 ### 2. Queue
 
-<img src="assets/images/queue.png" alt="queue" />
+![queue](assets/images/queue.png)
 
 A **Queue** is a fundamental data structure in computer science that follows the **First In, First Out (FIFO)** principle. This means that the first element added to the queue will be the first one to be removed. Queues are used in various applications such as scheduling processes in operating systems, managing tasks in a print spooler, and handling asynchronous data transfers.
 
 ### 3. Binary Tree
 
-<img src="assets/images/binary-tree.png" alt="binary tree" />
+![binary tree](assets/images/binary-tree.png)
 
 A **Binary Tree**, also been called Binary Search Tree, is a hierarchical data structure in which each node has at most two children, referred to as the left child and the right child. This structure is particularly useful for representing hierarchical relationships and is fundamental in various algorithms and applications. The time complexity of search a given element in a binary tree is $$O(\log_2n)$$ if the tree is balanced. The term "balanced" refers to a tree structure where the height difference between the left and right subtrees of any node is minimized. In the worst case, consider insert node 1,2,3,4,... in sequence, the binary will degrade to a singly linked list, where the time complexity of searching degrades to $$O(n)$$.
 
@@ -112,7 +112,7 @@ Heap can be classified into 2 class, Min Heap and Max Heap. In the Max Heap, eve
 
 An AVL Tree is a self-balancing tree, it will balance itself at every insertion. After each insertion, it will check the height difference between the left and right subtree of each node, if the difference is larger than 1, it will rotate the tree to make it balanced. The time complexity of searching in an AVL tree is constantly at $$O(\log_2n)$$.
 
-<img src="assets/images/rotation.png" alt="rotation" style="zoom:50%;" />
+![rotation](assets/images/rotation.png)
 
 **_Pseudocode for Rotations_**
 
