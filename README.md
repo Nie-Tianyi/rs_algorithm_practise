@@ -80,7 +80,13 @@ In the average cases, the time complexity of this algorithm is $O(n\log_2 n)$ an
 
 ## Data Structure
 
-### 1. Linked List
+### 1. Stack
+
+A stack is a linear data structure that follows the **Last In, First Out (LIFO)** principle. This means that the last element added to the stack will be the first one to be removed. 
+
+![stack-operations](assets/images/stack-operations.png)
+
+### 2. Linked List
 
 ![Linked List](assets/images/linked-list.webp)
 
@@ -90,25 +96,25 @@ There three types of linked list: singly linked list, doubly linked list, and ci
 
 In the rust implementation, to avoid the recursive reference, we use the `Rc<T>` to wrap the reference to the next node, and `Weak<T>` to wrap the reference to the previous node.
 
-### 2. Queue
+### 3. Queue
 
 ![queue](assets/images/queue.png)
 
 A **Queue** is a fundamental data structure in computer science that follows the **First In, First Out (FIFO)** principle. This means that the first element added to the queue will be the first one to be removed. Queues are used in various applications such as scheduling processes in operating systems, managing tasks in a print spooler, and handling asynchronous data transfers.
 
-### 3. Binary Tree
+### 4. Binary Tree
 
 ![binary tree](assets/images/binary-tree.png)
 
 A **Binary Tree**, also been called Binary Search Tree, is a hierarchical data structure in which each node has at most two children, referred to as the left child and the right child. This structure is particularly useful for representing hierarchical relationships and is fundamental in various algorithms and applications. The time complexity of search a given element in a binary tree is $$O(\log_2n)$$ if the tree is balanced. The term "balanced" refers to a tree structure where the height difference between the left and right subtrees of any node is minimized. In the worst case, consider insert node 1,2,3,4,... in sequence, the binary will degrade to a singly linked list, where the time complexity of searching degrades to $$O(n)$$.
 
-#### 3.1 Heap - A Complete Binary Tree
+#### 4.1 Heap - A Complete Binary Tree
 
 What is a Heap ? Heap is complete binary tree. A complete binary tree is a special type of binary tree where all the levels of the tree are filled completely except the lowest level nodes which are filled from as left as possible. How we represent a Heap? we use a `Vec`represent a Heap. for each node, it parent node's index in the `Vec` is $\lfloor\frac{n-1}{2}\rfloor$,its left child node's index is $2n+1$,right child node index is $2n+2$.
 
 Heap can be classified into 2 class, Min Heap and Max Heap. In the Max Heap, every parent node's value is larger than its child nodes' value. In the Min Heap, every parent node's value is smaller than its child node's value. Min Heap is also called priority queue.
 
-#### 3.2 AVL Tree - A Self-Balancing Binary Search Tree
+#### 4.2 AVL Tree - A Self-Balancing Binary Search Tree
 
 An AVL Tree is a self-balancing tree, it will balance itself at every insertion. After each insertion, it will check the height difference between the left and right subtree of each node, if the difference is larger than 1, it will rotate the tree to make it balanced. The time complexity of searching in an AVL tree is constantly at $$O(\log_2n)$$.
 
@@ -200,7 +206,7 @@ Here, the `mul`,`inc`,`modulo` are just random numbers. In case of overflow, we 
 
 ### 3. Hash Algorithm
 
-Building a hash method for a struct in Rust usually involves using trait `Hash` and `Hasher` in the standard library. The `Hasher` defines the steps to compute a hash value, any struct that implements `Hasher` trait can be used as a hash algorithm. We normally do not need to implement this trait ourselves, we can use `std::collections::hash_map::DefaultHasher` directly. Here is an example of implementing a `Hasher` trait:
+Building a hash method for a struct in Rust usually involves using trait `Hash` and `Hasher` in the standard library. The `Hasher` defines the steps to compute a hash value, **any struct that implements `Hasher` trait can be used as a hash algorithm**. We normally do not need to implement this trait ourselves, instead we would use `std::collections::hash_map::DefaultHasher` directly. Here is an example of implementing a `Hasher` trait:
 
 ```rust
 pub struct MHash {
@@ -227,7 +233,7 @@ The `fn write(&mut self, bytes: &[u8])` method defines steps to update an intern
 
 The default hash method and hasher return a `u64` value. This is because that the build-in hash traits are normally target at finding buckets for data structures like HashMap and not for any cryptography usage. It is a trade off between efficiency and security. If you need higher securities, consider using a third party cryptographic crate which may provide common cryptographic hash algorithms like SHA256 or SHA512.
 
-`Hash` trait defines an method that convert a type to a hash value. Any struct that implements this trait can be used as the key of a HashMap / HashSet. Here is definition of `Hash` trait:
+`Hash` trait defines an method that convert a type to a hash value. **Any struct that implements this trait can be used as the key of a HashMap / HashSet**. Here is definition of `Hash` trait:
 
 ```rust
 pub trait Hash {
