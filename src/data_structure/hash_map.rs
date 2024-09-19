@@ -1,4 +1,5 @@
 use crate::supplementary::hash::hash;
+use std::borrow::Borrow;
 use std::hash::Hash;
 
 #[derive(Debug)]
@@ -24,6 +25,34 @@ impl<K: Hash + Eq, V> BucketList<K, V> {
         self.len += 1;
         self.buckets[index].len()
     }
+
+    pub fn get<KB>(&self, key: &KB) -> Option<&V>
+    where
+        K: Borrow<KB>,
+        KB: Hash + Eq + ?Sized,
+    {
+        let index = hash(self.seed, &key) as usize % self.buckets.len();
+        for (ik, iv) in &self.buckets[index] {
+            if ik.borrow() == key {
+                return Some(iv);
+            }
+        }
+        None
+    }
+
+    pub fn get_mut<KB>(&mut self, key: &KB) -> Option<&mut V>
+    where
+        K: Borrow<KB>,
+        KB: Hash + Eq + ?Sized,
+    {
+        let index = hash(self.seed, &key) as usize % self.buckets.len();
+        for (ik, iv) in &mut self.buckets[index] {
+            if (ik as &K).borrow() == key {
+                return Some(iv);
+            }
+        }
+        None
+    }
 }
 
 impl<K: Hash + Eq, V> Default for BucketList<K, V> {
@@ -39,6 +68,11 @@ mod tests {
     #[test]
     fn it_works() {
         let mut bl = BucketList::new();
-        bl.push("abc", 123);
+
+        bl.push("port", 8080);
+        assert_eq!(bl.get("port"), Some(&8080));
+
+        *bl.get_mut("port").unwrap() += 1;
+        assert_eq!(bl.get("port"), Some(&8081));
     }
 }
