@@ -53,6 +53,15 @@ impl<K: Hash + Eq, V> BucketList<K, V> {
         }
         None
     }
+
+    pub fn bucket(&mut self, index: usize) -> Some(Vec<(K,V)>) {
+        if index >= self.buckets.len() {
+            return None;
+        }
+        let mut res = Vec::new();
+        std::mem::swap(&mut res, &mut self.buckets[index]);
+        res
+    }
 }
 
 impl<K: Hash + Eq, V> Default for BucketList<K, V> {
