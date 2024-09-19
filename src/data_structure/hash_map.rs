@@ -17,7 +17,7 @@ impl<K: Hash + Eq, V> BucketList<K, V> {
         }
     }
 
-    // return a usize indicating whether a bucket is too full
+    // return an usize indicating whether a bucket is too full
     pub fn push(&mut self, key: K, value: V) -> usize {
         let index = hash(self.seed, &key) as usize % self.buckets.len();
         self.buckets[index].push((key, value));
