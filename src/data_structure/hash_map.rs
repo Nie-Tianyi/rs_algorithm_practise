@@ -92,7 +92,6 @@ mod bucketlist_tests {
 }
 
 const BUCKET_SIZE: usize = 8;
-const GROW_SIZE: usize = 8;
 
 #[derive(Debug, Default, Clone)]
 pub struct HashMap<K, V> {
@@ -135,7 +134,7 @@ impl<K: Hash + Eq, V> HashMap<K, V> {
 
     pub fn move_buckets(&mut self) {
         if self.n_moved == 0 {
-            self.grow.set_buckets(self.main.buckets.len() + GROW_SIZE);
+            self.grow.set_buckets(self.main.buckets.len() * 2);
         }
         if let Some(b) = self.main.bucket(self.n_moved) {
             for (k, v) in b {
@@ -180,6 +179,6 @@ mod hashmap_test {
     fn test_hashmap() {
         let mut hm = HashMap::new();
         hm.insert("key", "value");
-        assert_eq!(1 + 1, 2);
+        assert_eq!(hm.get("key"), Some(&"value"));
     }
 }
