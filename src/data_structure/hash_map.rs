@@ -111,7 +111,7 @@ impl<K: Hash + Eq, V> HashMap<K, V> {
     }
 
     pub fn insert(&mut self, key: K, value: V) {
-        // check if the key already exists, mutate orginal value
+        // check if the key already exists, mutate original value
         if let Some(iv) = self.main.get_mut(&key) {
             *iv = value;
             return;
