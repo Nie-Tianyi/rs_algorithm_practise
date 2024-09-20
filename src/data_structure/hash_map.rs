@@ -111,16 +111,18 @@ impl<K: Hash + Eq, V> HashMap<K, V> {
     }
 
     pub fn insert(&mut self, key: K, value: V) {
-        // check if the key already exists, mutate original value
+        // check if the key already exists, the data would be either in the main buck list or grow bucket list
         if let Some(iv) = self.main.get_mut(&key) {
+            // if the data is found in the main-list, mutate it directly
             *iv = value;
             return;
         }
         if let Some(iv) = self.grow.get_mut(&key) {
+            // if the data is found in the grow-list, mutate it
             *iv = value;
             return;
         }
-
+        // otherwise check the
         if self.n_moved > 0 {
             self.grow.push(key, value);
             self.move_buckets();
@@ -179,6 +181,10 @@ mod hashmap_test {
     fn test_hashmap() {
         let mut hm = HashMap::new();
         hm.insert("key", "value");
+        hm.insert("alice", "abc");
+        hm.insert("hello", "world");
+        hm.insert("Bob", "secret-key");
+        hm.insert("aes", "encoding");
         assert_eq!(hm.get("key"), Some(&"value"));
     }
 }
