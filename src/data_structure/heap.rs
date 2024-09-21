@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 #[derive(Debug, Default, Clone)]
 pub struct Max;
 #[derive(Debug, Default, Clone)]
@@ -8,7 +10,7 @@ pub type PriorityQueue<T> = Heap<T, Min>;
 
 #[derive(Debug, Default, Clone)]
 pub struct Heap<T: PartialOrd, Marker = Min> {
-    _marker: std::marker::PhantomData<Marker>,
+    phantom: PhantomData<Marker>,
     data: Vec<T>,
 }
 
@@ -93,7 +95,7 @@ impl<T: PartialOrd> MaxHeap<T> {
     #[inline]
     pub fn new() -> MaxHeap<T> {
         MaxHeap {
-            _marker: Default::default(),
+            phantom: PhantomData,
             data: Vec::new(),
         }
     }
@@ -103,7 +105,7 @@ impl<T: PartialOrd> PriorityQueue<T> {
     #[inline]
     pub fn new() -> PriorityQueue<T> {
         PriorityQueue {
-            _marker: Default::default(),
+            phantom: PhantomData,
             data: Vec::new(),
         }
     }

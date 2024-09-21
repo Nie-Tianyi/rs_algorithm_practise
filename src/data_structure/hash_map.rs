@@ -19,6 +19,11 @@ impl<K: Hash + Eq, V> BucketList<K, V> {
             buckets: vec![Vec::new()],
         }
     }
+    
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.len == 0
+    }
 
     // return an usize indicating whether a bucket is too full
     fn push(&mut self, key: K, value: V) -> usize {
@@ -33,7 +38,7 @@ impl<K: Hash + Eq, V> BucketList<K, V> {
         K: Borrow<KB>,
         KB: Hash + Eq + ?Sized,
     {
-        let index = hash(self.seed, &key) as usize % self.buckets.len();
+        let index = hash(self.seed, key) as usize % self.buckets.len();
         for (ik, iv) in &self.buckets[index] {
             if ik.borrow() == key {
                 return Some(iv);
@@ -47,7 +52,7 @@ impl<K: Hash + Eq, V> BucketList<K, V> {
         K: Borrow<KB>,
         KB: Hash + Eq + ?Sized,
     {
-        let index = hash(self.seed, &key) as usize % self.buckets.len();
+        let index = hash(self.seed, key) as usize % self.buckets.len();
         for (ik, iv) in &mut self.buckets[index] {
             if (ik as &K).borrow() == key {
                 return Some(iv);
@@ -170,6 +175,11 @@ impl<K: Hash + Eq, V> HashMap<K, V> {
     #[inline]
     pub fn len(&self) -> usize {
         self.main.len + self.grow.len
+    }
+    
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.main.is_empty() && self.grow.is_empty()
     }
 }
 
