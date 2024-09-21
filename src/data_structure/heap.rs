@@ -1,14 +1,14 @@
 use std::marker::PhantomData;
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct Max;
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct Min;
 
 pub type MaxHeap<T> = Heap<T, Max>;
 pub type PriorityQueue<T> = Heap<T, Min>;
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct Heap<T: PartialOrd, Marker = Min> {
     phantom: PhantomData<Marker>,
     data: Vec<T>,

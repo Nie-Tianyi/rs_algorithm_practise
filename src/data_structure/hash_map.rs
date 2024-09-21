@@ -3,7 +3,7 @@ use std::borrow::Borrow;
 use std::hash::Hash;
 
 /// This is an internal data structure of a HashMap
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq)]
 struct BucketList<K, V> {
     seed: u64,
     len: usize,
@@ -98,7 +98,7 @@ mod bucketlist_tests {
 
 const BUCKET_SIZE: usize = 8;
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct HashMap<K, V> {
     n_moved: usize,
     main: BucketList<K, V>,
