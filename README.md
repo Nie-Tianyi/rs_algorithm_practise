@@ -120,14 +120,6 @@ An AVL Tree is a self-balancing tree, it will balance itself at every insertion.
 
 ![rotation](assets/images/rotation.png)
 
-### 5. HashMap 
-
-A HashMap is a data structure that stores key-value pairs. It allows for fast retrieval, insertion, and deletion of values based on their keys. The keys are hashed to generate an index where the value is stored, making these operations generally very efficient. The time complexity for searching operation in a hash-map only takes $O(1)$ .
-
-The core idea of HashMap is classify data into different buckets according to a hash algorithm, and when searching the data, search the data in its bucket directly. The bucket here is implemented by a `Vec` , and the `Bucketlist` is a `Vec` of `Vec`.  
-
-
-
 **_Pseudocode for Rotations_**
 
 - Right Rotation
@@ -153,6 +145,14 @@ left_rotate(node):
     update_height(right_child)
     return right_child
 ```
+
+### 5. HashMap
+
+A HashMap is a data structure that stores key-value pairs. It allows for fast retrieval, insertion, and deletion of values based on their keys. The keys are hashed to generate an index where the value is stored, making these operations generally very efficient. The time complexity for searching operation in a hash-map only takes $O(1)$ .
+
+The core idea of HashMap is classify data into different buckets according to a hash algorithm, and when searching the data, search the data in its bucket directly. The bucket here is implemented by a `Vec` , and the `Bucketlist` is a `Vec` of `Vec`.  
+
+
 
 ## Supplementary Materials
 
