@@ -19,7 +19,7 @@ impl<K: Hash + Eq, V> BucketList<K, V> {
             buckets: vec![Vec::new()],
         }
     }
-    
+
     #[inline]
     fn is_empty(&self) -> bool {
         self.len == 0
@@ -176,7 +176,7 @@ impl<K: Hash + Eq, V> HashMap<K, V> {
     pub fn len(&self) -> usize {
         self.main.len + self.grow.len
     }
-    
+
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.main.is_empty() && self.grow.is_empty()
