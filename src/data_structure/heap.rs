@@ -82,11 +82,11 @@ impl<T: PartialOrd, Marker> Heap<T, Marker> {
         self.data.swap(index, (index - 1) / 2);
     }
     #[inline]
-    pub fn shift_leftchild(&mut self, index: usize) {
+    pub fn shift_downleft(&mut self, index: usize) {
         self.data.swap(index, 2 * index + 1);
     }
     #[inline]
-    pub fn shift_rightchild(&mut self, index: usize) {
+    pub fn shift_downright(&mut self, index: usize) {
         self.data.swap(index, 2 * index + 2);
     }
 }
@@ -138,7 +138,7 @@ impl<T: PartialOrd> PriorityQueue<T> {
                     if val <= left_val {
                         break;
                     }
-                    self.shift_leftchild(index);
+                    self.shift_downleft(index);
                     index = Self::leftchild_index(index);
                 }
                 (None, Some(right_val)) => {
@@ -146,17 +146,17 @@ impl<T: PartialOrd> PriorityQueue<T> {
                     if val <= right_val {
                         break;
                     }
-                    self.shift_rightchild(index);
+                    self.shift_downright(index);
                     index = Self::rightchild_index(index);
                 }
                 (Some(left_val), Some(right_val)) => {
                     if val <= left_val && val <= right_val {
                         break;
                     } else if left_val <= right_val {
-                        self.shift_leftchild(index);
+                        self.shift_downleft(index);
                         index = Self::leftchild_index(index);
                     } else {
-                        self.shift_rightchild(index);
+                        self.shift_downright(index);
                         index = Self::rightchild_index(index);
                     }
                 }
